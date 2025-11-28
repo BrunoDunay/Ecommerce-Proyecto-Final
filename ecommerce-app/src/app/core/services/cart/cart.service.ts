@@ -14,12 +14,13 @@ import { HttpClient } from '@angular/common/http';
 import { ToastService } from '../toast/toast.service';
 import { Store } from '@ngrx/store';
 import { selectUserId } from '../../store/auth/auth.selectors';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private baseUrl = 'http://localhost:3000/api/cart';
+  private baseUrl = `${environment.BACK_URL}`;
   private cartSubject = new BehaviorSubject<Cart | null>(null);
   cart$ = this.cartSubject.asObservable();
 
