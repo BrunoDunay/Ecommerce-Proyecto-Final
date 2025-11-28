@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Order, orderArraySchema, orderSchema } from '../../types/Order';
 import { AuthService } from '../auth/auth.service';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment.prod';
 import {
   BehaviorSubject,
   catchError,

@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, map, Observable, } from 'rxjs';
 import { tokenSchema } from '../../types/Token';
 import { Router } from '@angular/router';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 
 export type decodedToken = {
   userId: string;
