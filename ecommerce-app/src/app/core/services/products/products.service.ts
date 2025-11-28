@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError,  } from 'rxjs';
 import { Product, ProductResponse } from '../../types/Products';
+import { environment } from '../../../../environments/environment.development';
 
 export type filters = {
   q: string;
@@ -13,7 +14,7 @@ export type filters = {
   providedIn: 'root',
 })
 export class ProductsService {
-  private baseUrl = 'http://localhost:3000/api/products';
+  private baseUrl = `${environment.BACK_URL}/products`;
   constructor(private httpClient: HttpClient) {}
 
   getProducts(page: number = 1, limit: number = 10) {
