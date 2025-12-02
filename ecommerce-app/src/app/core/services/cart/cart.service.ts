@@ -20,7 +20,7 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class CartService {
-  private baseUrl = `${environment.BACK_URL}`;
+  private baseUrl = `${environment.BACK_URL}/cart`;
   private cartSubject = new BehaviorSubject<Cart | null>(null);
   cart$ = this.cartSubject.asObservable();
 

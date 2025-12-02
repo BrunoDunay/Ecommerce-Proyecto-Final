@@ -21,7 +21,6 @@ export class ProductsService {
     return this.httpClient
       .get<ProductResponse>(this.baseUrl, { params: { page, limit } })
       .pipe(catchError((error) => throwError(() => new Error(error))));
-
   }
 
   getProductByID(id:string):Observable<Product>{
