@@ -1,0 +1,41 @@
+<div class="max-w-5xl mx-auto mt-10 bg-white p-6 rounded-xl shadow">
+
+  <h1 class="text-2xl font-bold mb-6">Usuarios Registrados</h1>
+
+  <div *ngIf="loading" class="text-gray-500">
+    Cargando usuarios...
+  </div>
+
+  <div *ngIf="!loading && errorMsg" class="text-red-600">
+    {{ errorMsg }}
+  </div>
+
+  <div *ngIf="!loading && !errorMsg">
+
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="border-b">
+          <th class="py-2">Avatar</th>
+          <th class="py-2">Nombre</th>
+          <th class="py-2">Correo</th>
+          <th class="py-2">Rol</th>
+          <th class="py-2">Activo</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let u of users" class="border-b hover:bg-gray-50">
+          <td class="py-2">
+            <img [src]="u.avatar" class="w-10 h-10 rounded-full" />
+          </td>
+          <td>{{ u.displayName }}</td>
+          <td>{{ u.email }}</td>
+          <td class="capitalize">{{ u.role }}</td>
+          <td>{{ u.isActive ? 'Sí' : 'No' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

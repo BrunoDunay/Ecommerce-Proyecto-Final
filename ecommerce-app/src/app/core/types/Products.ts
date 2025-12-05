@@ -2,7 +2,7 @@ import z from 'zod';
 import { Category } from './Category';
 
 export type Product = {
-  _id:string;
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -11,6 +11,7 @@ export type Product = {
   imageUrl: string;
   category: Category;
 };
+
 export type ProductResponse = {
   products: Product[];
   pagination: {
@@ -23,11 +24,11 @@ export type ProductResponse = {
 };
 
 export const cartProductSchema = z.object({
-    _id: z.string(),
-    name: z.string(),
-    description: z.string().optional(),
-    price: z.number(),
-    imageUrl: z.string().optional(),
-    stock: z.number(),
-    category: z.string(),
+  _id: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  price: z.number(),
+  imageUrl: z.string().optional(),
+  stock: z.number(),
+  category: z.string(),
 });

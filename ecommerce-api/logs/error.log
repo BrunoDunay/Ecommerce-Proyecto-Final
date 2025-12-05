@@ -122,3 +122,74 @@
     at C:\Users\usuario final\Desktop\INDPTDOS\2025-2-A-Node\2025-Angular-modulo-3\02.Project\ecommerce-api\node_modules\router\index.js:295:15
     at processParams (C:\Users\usuario final\Desktop\INDPTDOS\2025-2-A-Node\2025-Angular-modulo-3\02.Project\ecommerce-api\node_modules\router\index.js:582:12)
     at next (C:\Users\usuario final\Desktop\INDPTDOS\2025-2-A-Node\2025-Angular-modulo-3\02.Project\ecommerce-api\node_modules\router\index.js:291:5)
+2025-12-03T18:18:20.170Z | DELETE /cart/remove-product | No matching document found for id "692f315814338a8404bc8ee1" version 11 modifiedPaths "products" | VersionError: No matching document found for id "692f315814338a8404bc8ee1" version 11 modifiedPaths "products"
+    at generateVersionError (C:\Users\usuario final\Desktop\INDPTDOS\2025-2-A-Node\Ecommerce-project\ecommerce-api\node_modules\mongoose\lib\model.js:571:10)
+    at model.save (C:\Users\usuario final\Desktop\INDPTDOS\2025-2-A-Node\Ecommerce-project\ecommerce-api\node_modules\mongoose\lib\model.js:629:28)
+    at removeFromCart (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/cartController.js:175:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T18:57:35.414Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T18:57:55.542Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T18:58:25.408Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T18:58:31.597Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T18:58:56.528Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T18:59:10.906Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T18:59:16.767Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T19:04:22.383Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T19:07:18.209Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T19:07:33.408Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-03T19:07:48.639Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T14:59:50.815Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:22:29.102Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:22:32.968Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:22:40.041Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:28:09.622Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:28:20.158Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:28:31.230Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:28:35.714Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T15:28:48.806Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T16:37:20.414Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-12-04T16:37:22.939Z | GET /api/products/categories | next is not defined | ReferenceError: next is not defined
+    at getProductById (file:///C:/Users/usuario%20final/Desktop/INDPTDOS/2025-2-A-Node/Ecommerce-project/ecommerce-api/src/controllers/productController.js:41:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

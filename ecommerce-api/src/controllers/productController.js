@@ -1,6 +1,6 @@
 import Product from "../models/product.js";
 
-async function getProducts(req, res) {
+async function getProducts(req, res, next) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -29,7 +29,8 @@ async function getProducts(req, res) {
     next(error);
   }
 }
-async function getProductById(req, res) {
+
+async function getProductById(req, res, next) {
   try {
     const id = req.params.id;
     const product = await Product.findById(id).populate("category");
@@ -48,7 +49,6 @@ async function getProductByCategory(req, res, next) {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-
 
     const products = await Product.find({ category: idCategory })
       .populate("category")
@@ -75,11 +75,11 @@ async function getProductByCategory(req, res, next) {
   }
 }
 
-async function createProduct(req, res) {
+async function createProduct(req, res, next) {
   try {
-    const { name, description, price, stock, imagesUrl, category } = req.body;
+    const { name, description, price, stock, imageUrl, category, offer } = req.body;
 
-    if (!name || !description || !price || !stock || !imagesUrl || !category) {
+    if (!name || !description || !price || !stock || !imageUrl || !category) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -88,26 +88,31 @@ async function createProduct(req, res) {
       description,
       price,
       stock,
-      imagesUrl,
+      imageUrl,
       category,
+      offer,
     });
+
     res.status(201).json(newProduct);
   } catch (error) {
     next(error);
   }
 }
-async function updateProduct(req, res) {
+
+async function updateProduct(req, res, next) {
   try {
     const id = req.params.id;
-    const { name, description, price, stock, imagesUrl, category } = req.body;
+    const { name, description, price, stock, imageUrl, category, offer } = req.body;
 
-    if (!name || !description || !price || !stock || !imagesUrl || !category) {
+    if (!name || !description || !price || !stock || !imageUrl || !category) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
+    console.log("Updating product with ID:", id);
+
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      { name, description, price, stock, imagesUrl, category },
+      { name, description, price, stock, imageUrl, category, offer },
       { new: true }
     );
 
@@ -119,6 +124,7 @@ async function updateProduct(req, res) {
     next(error);
   }
 }
+
 async function deleteProduct(req, res, next) {
   try {
     const id = req.params.id;
@@ -164,7 +170,7 @@ async function searchProducts(req, res, next) {
       if (minPrice) filters.price.$gte = parseFloat(minPrice);
       if (maxPrice) filters.price.$lte = parseFloat(maxPrice);
     }
-    const bool = Boolean(inStock);
+
     if (inStock === "true") {
       filters.stock = { $gt: 0 };
     } else {
@@ -176,7 +182,7 @@ async function searchProducts(req, res, next) {
       const sortOrder = order === "desc" ? -1 : 1;
       sortOptions[sort] = sortOrder;
     } else {
-      sortOptions.createdAt = -1;
+      sortOptions = { createdAt: -1 };
     }
 
     const skip = (parseInt(page) - 1) * parseInt(limit);

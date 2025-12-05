@@ -24,9 +24,14 @@ export const routes: Routes = [
     title:'product details',
   },
   {
+  path: 'product-edit/:id',
+  loadComponent: () => import('./pages/admin/product-edit/product-edit.component').then(m => m.ProductEditComponent),
+  canActivate: [authGuard],
+  title: 'Edit Product' 
+  },
+  {
     path: 'register', loadComponent:()=> import('../app/pages/register/register.component').then(c=>c.RegisterComponent),
     title: 'registro',
-    // canDeactivate: [formGuard,/*A, B, C */ ]
   },
   {
     path: 'login', loadComponent: ()=> import('../app/pages/login/login.component').then(c=>c.LoginComponent),
@@ -35,14 +40,23 @@ export const routes: Routes = [
   },
   {
     path: 'user', loadComponent: () => import('../app/pages/user/user.component').then(c=>c.UserComponent),
-    //children: USER_ROUTES
     loadChildren: () => import('../app/pages/user/user.routes').then(r=>r.USER_ROUTES),
     canActivate:[authGuard]
   },
   {
     path:'thank-you-page',
     loadComponent:() => import('../app/pages/thank-you/thank-you.component').then(c=> c.ThankYouComponent)
-  }
+  },
+  {
+  path: 'admin/users',
+  loadComponent: () => import('./pages/admin/users/users.component')
+    .then(c => c.AdminUsersComponent)
+},
+{
+  path: 'admin/categories',
+  loadComponent: () => import('./pages/admin/categories/categories.component')
+    .then(c => c.AdminCategoriesComponent)
+}
   
 
 ];

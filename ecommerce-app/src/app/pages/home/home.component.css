@@ -1,0 +1,152 @@
+.home-hero-container {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 2.5rem auto 4rem auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-text {
+  text-align: center;
+  max-width: 640px;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 800;
+  color: #0f172a; 
+  margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+/* ---------- Carrusel 3D ---------- */
+
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  top: -130px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.inner {
+  --w: 140px;
+  --h: 200px;
+  --translateZ: calc((var(--w) + var(--h)) + 40px);
+  --rotateX: -15deg;
+  --perspective: 1000px;
+  position: absolute;
+  width: var(--w);
+  height: var(--h);
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  transform: perspective(var(--perspective)) translate(-50%, -50%);
+  animation: rotating 40s linear infinite;
+}
+
+@keyframes rotating {
+  from {
+    transform: perspective(var(--perspective))
+      translate(-50%, -50%)
+      rotateX(var(--rotateX))
+      rotateY(0);
+  }
+  to {
+    transform: perspective(var(--perspective))
+      translate(-50%, -50%)
+      rotateX(var(--rotateX))
+      rotateY(1turn);
+  }
+}
+
+.card {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+    translateZ(var(--translateZ));
+  border: 1px solid rgba(148, 163, 184, 0.5); 
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.5);
+}
+
+
+.img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.45rem 0.5rem;
+  background: linear-gradient(
+    to top,
+    rgba(15, 23, 42, 0.9),
+    rgba(15, 23, 42, 0.6),
+    transparent
+  );
+  color: #e5e7eb; 
+  text-align: left;
+}
+
+.card-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+  line-height: 1.1;
+}
+
+.card-price {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #bbf7d0; 
+}
+
+.card-offer {
+  font-size: 0.7rem;
+  color: #fed7aa; 
+}
+
+
+.loading-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #94a3b8; 
+}
+
+
+@media (max-width: 768px) {
+  .wrapper {
+    height: 320px;
+  }
+
+  .inner {
+    --w: 110px;
+    --h: 160px;
+    --translateZ: calc((var(--w) + var(--h)) + 20px);
+  }
+}
