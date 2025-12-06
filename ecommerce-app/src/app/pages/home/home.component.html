@@ -10,8 +10,8 @@
     </p>
   </div>
 
-  <!-- Carrusel 3D -->
-  <div class="wrapper" *ngIf="!loading && products.length > 0">
+  <!-- Carrusel 3D (solo desktop) -->
+  <div class="wrapper-desktop" *ngIf="!loading && products.length > 0">
     <div
       class="inner"
       [style.--quantity]="products.length"
@@ -43,6 +43,35 @@
       </a>
     </div>
   </div>
+
+  <!-- Carrusel horizontal (solo móvil) -->
+  <div class="wrapper-mobile" *ngIf="products.length > 0 && !loading">
+  <div
+    class="mobile-track"
+    #mobileTrack
+  >
+    <a
+      class="mobile-card"
+      *ngFor="let product of products; index as i"
+      [routerLink]="['/product-view', product._id]"
+    >
+      <div
+        class="mobile-img"
+        [ngStyle]="{
+          'background-image': 'url(' + product.imageUrl + ')'
+        }"
+      ></div>
+
+      <div class="mobile-info">
+        <h3 class="mobile-title">{{ product.name }}</h3>
+        <p class="mobile-price">{{ product.price | currency:'MXN':'symbol-narrow' }}</p>
+        <p class="mobile-offer" *ngIf="product.offer > 0">
+          -{{ product.offer }}%
+        </p>
+      </div>
+    </a>
+  </div>
+</div>
 
   <div *ngIf="loading" class="loading-text">
     Cargando productos destacados...

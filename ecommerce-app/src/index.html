@@ -10,6 +10,15 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="mat-typography">
+  <video autoplay muted loop id="bg-video">
+  <source src="/images/fondo-blanco.mp4" type="video/mp4" />
+</video>
   <app-root></app-root>
 </body>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('bg-video');
+    video.playbackRate = 0.75; 
+  });
+</script>
 </html>

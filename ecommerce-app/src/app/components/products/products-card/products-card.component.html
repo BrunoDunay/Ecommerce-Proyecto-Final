@@ -1,89 +1,119 @@
+<!-- Contenedor externo con gradiente y animación -->
 <div
-  class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+  class="card-shell"
   data-cy="product-card"
   [attr.data-cy-product-id]="product._id"
 >
-  <div class="absolute"  *appOffer="product.offer">
-    <span class="rounded-full p-4 bg-red-500 text-white text-sm absolute top-0 left-0 z-50 font-bold">
-      -{{product.offer}}%
-    </span>
-  </div>
-  <div class="aspect-square bg-gray-100 flex items-center justify-center">
-    @if (product.imageUrl) {
-    <img
-      [src]="product.imageUrl"
-      [alt]="product.name"
-      class="w-full h-full object-cover"
-    />
-    } @else {
-    <svg
-      class="w-16 h-16 text-gray-400"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-      ></path>
-    </svg>
-    }
-  </div>
-  <div class="p-4">
-    <a class="text-xs text-blue-600 font-medium line-clamp-1 cursor-pointer">{{
-      product.category.name
-    }}</a>
-
-    <h3 class="font-semibold text-gray-900 mt-1 mb-2 line-clamp-1">
-      {{ product.name }}
-    </h3>
-
-    <p class="text-gray-600 text-sm mb-3 line-clamp-2">
-      {{ product.description }}
-    </p>
-
-    <div class="mb-4">
-      <span class="text-xl font-bold text-gray-900">{{ product.price }}</span>
-      <div class="text-xs text-gray-500 mt-1">Stock: {{ product.stock }}</div>
+  <!-- Contenedor interno de la tarjeta -->
+  <div
+    class="card-inner bg-white rounded-lg overflow-hidden relative flex flex-col"
+  >
+    <!-- Badge de oferta -->
+    <div class="absolute" *appOffer="product.offer">
+      <span
+        class="rounded-full px-3 py-1 bg-red-500 text-white text-xs sm:text-sm absolute top-2 left-2 z-50 font-bold shadow-md"
+      >
+        -{{ product.offer }}%
+      </span>
     </div>
 
-    <div class="flex gap-2">
+    <!-- Imagen -->
+    <div class="aspect-square bg-gray-100 flex items-center justify-center">
+      @if (product.imageUrl) {
+      <img
+        [src]="product.imageUrl"
+        [alt]="product.name"
+        class="w-full h-full object-cover"
+      />
+      } @else {
+      <svg
+        class="w-16 h-16 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+        ></path>
+      </svg>
+      }
+    </div>
+
+    <!-- Info -->
+    <div class="p-4 flex-1 flex flex-col">
       <a
-        routerLink=""
-        [routerLink]="['/product-view', product._id]"
-        class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-        data-cy="view-product-btn"
+        class="text-xs text-blue-600 font-medium line-clamp-1 cursor-pointer mb-1"
       >
-        Ver más
+        {{ product.category.name }}
       </a>
-      <button
-        data-cy="add-to-cart-btn"
-        [disabled]="product.stock === 0"
-        [class]="
-          product.stock === 0
-            ? 'bg-gray-300 text-gray-500'
-            : 'bg-green-600 hover:bg-green-700 text-white'
-        "
-        class="px-4 py-2 rounded-md transition-colors disabled:bg-gray-300"
-        [disabled]="loading"
-        (click)="addToCart()"
-      >
-        🛒
-      </button>
-      <!-- <div *ngIf="rol === 'admin'"> -->
-      <div *appAdmin>
-        <button
-          class="absolute p-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-all duration-200 hover:scale-105"
-            [routerLink]="['/product-edit', product._id]"
+
+      <h3 class="font-semibold text-gray-900 mb-1 line-clamp-1">
+        {{ product.name }}
+      </h3>
+
+      <p class="text-gray-600 text-sm mb-3 line-clamp-2">
+        {{ product.description }}
+      </p>
+
+      <div class="mb-4">
+        <span class="text-xl font-bold text-gray-900">
+          {{ product.price | currency:'MXN':'symbol-narrow' }}
+        </span>
+        <div class="text-xs text-gray-500 mt-1">
+          Stock: {{ product.stock }}
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex items-center gap-2 mt-auto">
+        <a
+          [routerLink]="['/product-view', product._id]"
+          class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm text-center"
+          data-cy="view-product-btn"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-            </svg>
+          Ver más
+        </a>
+
+        <button
+          data-cy="add-to-cart-btn"
+          [disabled]="product.stock === 0 || loading"
+          [ngClass]="
+            product.stock === 0
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 text-white'
+          "
+          class="px-3 py-2 rounded-md transition-colors disabled:bg-gray-300 flex items-center justify-center"
+          (click)="addToCart()"
+        >
+          🛒
         </button>
+
+        <!-- Botón de editar solo admin -->
+        <div *appAdmin>
+          <button
+            class="p-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-all duration-200 hover:scale-105 shadow-md"
+            [routerLink]="['/product-edit', product._id]"
+            title="Editar producto"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,0 +1,25 @@
+.card-shell {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
+  transition: all 0.3s ease;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 18px;
+  transition: all 0.2s ease;
+}
+
+.card-shell:hover {
+  box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.3);
+  transform: translateY(-4px);
+}
+
+.card-shell:hover .card-inner {
+  transform: scale(0.98);
+  border-radius: 20px;
+}
