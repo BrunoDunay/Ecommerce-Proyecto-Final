@@ -1,0 +1,92 @@
+<form [formGroup]="addressForm" (ngSubmit)="onSubmit()" class="space-y-4">
+  <app-form-field
+    label="Nombre del destinatario"
+    fieldId="name"
+    type="text"
+    placeholder="Nombre completo"
+    [errorMessage]="getFieldError('name')"
+    formControlName="name"
+  ></app-form-field>
+
+  <app-form-field
+    label="Dirección"
+    fieldId="address"
+    type="text"
+    placeholder="Calle, número, colonia"
+    [errorMessage]="getFieldError('address')"
+    formControlName="address"
+  ></app-form-field>
+
+  <app-form-field
+    label="Ciudad"
+    fieldId="city"
+    type="text"
+    placeholder="Ciudad"
+    [errorMessage]="getFieldError('city')"
+    formControlName="city"
+  ></app-form-field>
+
+  <app-form-field
+    label="Estado"
+    fieldId="state"
+    type="text"
+    placeholder="Estado"
+    [errorMessage]="getFieldError('state')"
+    formControlName="state"
+  ></app-form-field>
+
+  <div class="grid grid-cols-2 gap-4">
+    <app-form-field
+      label="Código postal"
+      fieldId="postalCode"
+      type="text"
+      placeholder="Código postal"
+      [errorMessage]="getFieldError('postalCode')"
+      formControlName="postalCode"
+    ></app-form-field>
+
+    <app-form-field
+      label="País"
+      fieldId="country"
+      type="text"
+      placeholder="País"
+      [errorMessage]="getFieldError('country')"
+      formControlName="country"
+    ></app-form-field>
+  </div>
+
+  <app-form-field
+    label="Teléfono"
+    fieldId="phone"
+    type="text"
+    placeholder="Teléfono de contacto"
+    [errorMessage]="getFieldError('phone')"
+    formControlName="phone"
+  ></app-form-field>
+
+  <div class="flex items-center gap-2">
+    <input id="isDefault" type="checkbox" formControlName="isDefault" />
+    <label for="isDefault" class="text-sm text-gray-700">
+      Usar como dirección predeterminada
+    </label>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">
+      Tipo de dirección
+    </label>
+    <select formControlName="addressType" class="w-full border rounded px-3 py-2">
+      <option value="home">Casa</option>
+      <option value="work">Trabajo</option>
+      <option value="other">Otra</option>
+    </select>
+  </div>
+
+  <button
+    type="submit"
+    [disabled]="addressForm.invalid"
+    class="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    {{ isEditMode ? 'Actualizar dirección' : 'Guardar dirección' }}
+  </button>
+</form>

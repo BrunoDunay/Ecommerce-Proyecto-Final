@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Order, orderArraySchema, orderSchema } from '../../types/Order';
-import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../../environments/environment.prod';
 import {
   BehaviorSubject,
@@ -9,7 +8,6 @@ import {
   map,
   Observable,
   of,
-  switchMap,
   take,
   tap,
 } from 'rxjs';
@@ -26,6 +24,7 @@ export class OrderService {
 
   private lastOrderSubject = new BehaviorSubject<Order | null>(null);
   public lastOrder$ = this.lastOrderSubject.asObservable();
+
   constructor(private http: HttpClient, private store: Store) {}
 
   private getUserId(): string {
@@ -39,13 +38,24 @@ export class OrderService {
 
   loadOrders(): void {
     const userId = this.getUserId();
-    if (!userId) return;
+    if (!userId) {
+      this.ordersSubject.next([]);
+      return;
+    }
+
+    this.getOrdersByUserId(userId).subscribe({
+      next: (orders) => this.ordersSubject.next(orders),
+      error: (err) => {
+        console.error('Error fetching orders for user', err);
+        this.ordersSubject.next([]);
+      },
+    });
   }
 
   getOrdersByUserId(userId: string): Observable<Order[]> {
-    return this.http.get(`${this.baseUrl}/${userId}`).pipe(
+    return this.http.get(`${this.baseUrl}/user/${userId}`).pipe(
       map((data) => {
-        console.log(data);
+        console.log('Orders by user →', data);
         const response = orderArraySchema.safeParse(data);
         if (!response.success) {
           throw new Error(`Order validation failed: ${response.error}`);
@@ -78,4 +88,5 @@ export class OrderService {
       })
     );
   }
+
 }

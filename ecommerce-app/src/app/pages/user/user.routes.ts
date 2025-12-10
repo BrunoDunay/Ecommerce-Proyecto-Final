@@ -44,14 +44,19 @@ export const USER_ROUTES: Routes = [
     title: 'Lista de deseos',
   },
   {
-    path: 'checkout',
-    component: CheckOutComponent,
-    title: 'Checkout',
+    path: 'my-orders',
+    loadComponent: () =>
+      import('./orders/orders.component').then((c) => c.OrdersComponent),
+    title: 'Mis ordenes',
+    canActivate: [authGuard],
   },
   {
-    path: '',
-    redirectTo: 'profile',
-    pathMatch: 'full',
-  },
+    path: 'checkout',
+    loadComponent: () =>
+      import('./check-out/check-out.component').then(
+        (c) => c.CheckOutComponent
+      ),
+    title: 'Checkout',
+  }
   
 ];

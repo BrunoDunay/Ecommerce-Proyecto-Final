@@ -21,7 +21,7 @@ export class PaymethodsComponent implements OnInit {
   constructor(private paymentService: PaymentService) {}
 
   ngOnInit(): void {
-    this.paymentMethods$ = this.paymentService.paymetMethods$;
+    this.paymentMethods$ = this.paymentService.paymentMethods$;
   }
 
   onEdit(payment: PaymentMethod) {

@@ -1,0 +1,15 @@
+<div class="grid gap-4">
+  @for (addr of addresses; track $index) {
+    <app-shipping-address-card
+      [address]="addr"
+      [isEditable]="isEditable"
+      [isSelectable]="isSelectable"
+      [isSelected]="selectedId === addr._id"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+      (select)="onSelect($event)"
+      (setDefault)="onSetDefault($event)"
+    >
+    </app-shipping-address-card>
+  }
+</div>

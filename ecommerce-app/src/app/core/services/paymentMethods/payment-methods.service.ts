@@ -22,10 +22,10 @@ import { environment } from '../../../../environments/environment';
 export class PaymentService {
   // private baseUrl = `http://localhost:3000/api/payment-methods`;
   private baseUrl = `${environment.BACK_URL}/payment-methods`;
-  private paymetMethodSubject = new BehaviorSubject<PaymentMethod | null>(null);
-  private paymetMethodListSubject = new BehaviorSubject<PaymentMethod[]>([]);
-  paymetMethod$ = this.paymetMethodSubject.asObservable();
-  paymetMethods$ = this.paymetMethodListSubject.asObservable();
+  private paymentMethodSubject = new BehaviorSubject<PaymentMethod | null>(null);
+  private paymentMethodListSubject = new BehaviorSubject<PaymentMethod[]>([]);
+  paymentMethod$ = this.paymentMethodSubject.asObservable();
+  paymentMethods$ = this.paymentMethodListSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -50,17 +50,17 @@ export class PaymentService {
     console.log('Loading payment methods for user ID:', id);
     if (!id) {
       console.log('No user ID found, setting empty array');
-      this.paymetMethodListSubject.next([]);
+      this.paymentMethodListSubject.next([]);
       return;
     }
     this.getPayMethodbyUser(id).subscribe({
       next: (data) => {
         console.log('Payment methods loaded:', data);
-        this.paymetMethodListSubject.next(data);
+        this.paymentMethodListSubject.next(data);
       },
       error: (error) => {
         console.error('Error loading payment methods:', error);
-        this.paymetMethodListSubject.next([]);
+        this.paymentMethodListSubject.next([]);
       },
     });
   }
@@ -88,7 +88,7 @@ export class PaymentService {
       switchMap(() => this.getPayMethodbyUser(id)),
       tap((udatedPayments) => {
         this.toast.success('metodo de pago agregado');
-        this.paymetMethodListSubject.next(udatedPayments);
+        this.paymentMethodListSubject.next(udatedPayments);
       })
     );
   }
@@ -102,7 +102,7 @@ export class PaymentService {
       switchMap(() => this.getPayMethodbyUser(id)),
       tap((udatedPayments) => {
         this.toast.success('metodo de pago actualizado');
-        this.paymetMethodListSubject.next(udatedPayments);
+        this.paymentMethodListSubject.next(udatedPayments);
       })
     );
   }
@@ -117,11 +117,11 @@ export class PaymentService {
       tap((udatedPayments) => {
         this.toast.success('metodo pago eliminado');
       
-        this.paymetMethodListSubject.next(udatedPayments ?? []);
+        this.paymentMethodListSubject.next(udatedPayments ?? []);
       }),
       catchError(error => {
         console.error('Error deleting payment method:', error);
-        this.paymetMethodListSubject.next([]);
+        this.paymentMethodListSubject.next([]);
         return of([]);
       })
     );
