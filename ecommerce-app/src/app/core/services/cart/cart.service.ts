@@ -33,35 +33,40 @@ export class CartService {
   }
 
   getUserId(): string {
-    // const id = ''
-    // if (id) {
-    //   return id;
-    // }
-    // else{
-    //   return 'IdGenerico'
-    // };
-
-    // return id ? id.toUpperCase() : 'IdGenerico';
-    // return id ?? 'IdGenrico'
-    let userId: string =''
-    this.store.select(selectUserId).pipe(take(1)).subscribe({next:(id)=>userId=id ?? ''})
-    return userId
+    let userId: string = '';
+    this.store
+      .select(selectUserId)
+      .pipe(take(1))
+      .subscribe({
+        next: (id) => (userId = id ?? ''),
+      });
+    return userId;
   }
 
   getCartByUserId(userId: string): Observable<Cart | null> {
     return this.httpClient.get(`${this.baseUrl}/user/${userId}`).pipe(
-      map((data) => {
+      map((data: any) => {
+        // 🧹 Limpiar productos con product === null
+        if (Array.isArray(data?.products)) {
+          data = {
+            ...data,
+            products: data.products.filter(
+              (item: any) => item && item.product !== null
+            ),
+          };
+        }
+
         const response = cartSchema.safeParse(data);
         if (!response.success) {
-          console.log(response.error);
-          throw new Error(`${response.error}`);
+          console.error('Error al parsear el carrito', response.error);
+          throw response.error;
         }
         return response.data;
       })
     );
   }
 
-  loadUserCart(){
+  loadUserCart() {
     const id = this.getUserId();
     if (!id) {
       this.cartSubject.next(null);
@@ -69,94 +74,119 @@ export class CartService {
     }
 
     this.getCartByUserId(id).subscribe({
-      next: (cart)=>{
+      next: (cart) => {
         this.cartSubject.next(cart);
       },
-      error: (error)=>{
+      error: (error) => {
+        console.error('Error al cargar el carrito del usuario', error);
         this.cartSubject.next(null);
-      }
-    })
+      },
+    });
   }
 
-
-  addToCart(productId: string, quantity: number =1):Observable<Cart | null>{
-    const userId= this.getUserId();
+  addToCart(productId: string, quantity: number = 1): Observable<Cart | null> {
+    const userId = this.getUserId();
     if (!userId) {
       console.log('usuario no autentificado');
+      this.toast.error('Debes iniciar sesión para agregar productos al carrito');
       return of(null);
     }
+
     const payload = {
       userId,
       productId,
-      quantity
-    }
+      quantity,
+    };
+
     return this.httpClient.post(`${this.baseUrl}/add-product`, payload).pipe(
-      switchMap( ()=>this.getCartByUserId(userId) /*()=>{return this.getCartByUserId(userId)}*/),
-      tap((updatedCart)=>{
-        this.toast.success('Producto agregado al carrito');
+      switchMap(() => this.getCartByUserId(userId)),
+      tap((updatedCart) => {
         this.cartSubject.next(updatedCart);
+        this.toast.success('Producto agregado al carrito');
       }),
-      catchError((error)=>{
+      catchError((error) => {
+        console.error('Error al agregar al carrito', error);
+        this.toast.error('No se pudo agregar el producto al carrito');
         return of(null);
       })
-    )
+    );
   }
 
-  removeFromCart(productId: string): Observable<Cart| null>{
-    const userId= this.getUserId();
+  removeFromCart(productId: string): Observable<Cart | null> {
+    const userId = this.getUserId();
     if (!userId) {
       console.log('usuario no autentificado');
+      this.toast.error('Debes iniciar sesión para modificar el carrito');
       return of(null);
     }
+
     const payload = {
       userId,
-      productId
-    }
-    return this.httpClient.delete(`${this.baseUrl}/remove-product`, {body: payload}).pipe(
-      switchMap(()=>this.getCartByUserId(userId)),
-      tap((updatedCart)=>{
-        this.cartSubject.next(updatedCart),
-        this.toast.success('Producto eliminado del carrito');
-      })
-    )
-  };
+      productId,
+    };
 
-  clearCart():Observable<Cart | null>{
+    return this.httpClient
+      .delete(`${this.baseUrl}/remove-product`, { body: payload })
+      .pipe(
+        switchMap(() => this.getCartByUserId(userId)),
+        tap((updatedCart) => {
+          this.cartSubject.next(updatedCart);
+          this.toast.success('Producto eliminado del carrito');
+        }),
+        catchError((error) => {
+          console.error('Error al eliminar del carrito', error);
+          this.toast.error('No se pudo eliminar el producto del carrito');
+          // Devolvemos el estado actual para no romper la UI
+          return of(this.cartSubject.value);
+        })
+      );
+  }
+
+  clearCart(): Observable<Cart | null> {
     const cartId = this.cartSubject.value?._id;
     if (!cartId) {
       return of(null);
     }
+
     return this.httpClient.delete(`${this.baseUrl}/${cartId}`).pipe(
-      tap(()=>{
+      tap(() => {
         this.cartSubject.next(null);
         this.toast.success('Carrito eliminado');
       }),
-      map(()=>null)
+      map(() => null),
+      catchError((error) => {
+        console.error('Error al vaciar el carrito', error);
+        this.toast.error('No se pudo vaciar el carrito');
+        return of(this.cartSubject.value);
+      })
     );
   }
-  //[ lattop: 1, ram: 2, mouse:3, sliksong: 4]
-  getItemCount(): Observable<number>{
-    return this.cart$.pipe(
-      map((cart)=>{
-        if (!cart || cart.products.length ===0) {
-          return 0;
-        }
-        return cart.products.reduce((total, item)=> total + item.quantity, 0);
-      })
-    )
-  };
 
-  getCartTotal():Observable<number>{
+  getItemCount(): Observable<number> {
     return this.cart$.pipe(
-      map((cart)=>{
-        if (!cart || cart.products.length ===0) {
+      map((cart) => {
+        if (!cart || cart.products.length === 0) {
           return 0;
         }
-        return cart.products.reduce((total, item)=> total + item.product.price*item.quantity ,0);
+        return cart.products.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
       })
-    )
+    );
   }
 
-  
-
+  getCartTotal(): Observable<number> {
+    return this.cart$.pipe(
+      map((cart) => {
+        if (!cart || cart.products.length === 0) {
+          return 0;
+        }
+        return cart.products.reduce(
+          (total, item) => total + item.product.price * item.quantity,
+          0
+        );
+      })
+    );
+  }
 }

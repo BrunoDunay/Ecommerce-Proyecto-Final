@@ -1,5 +1,6 @@
 import Category from "../models/category.js";
 import errorHandler from "../middlewares/errorHandler.js";
+import Product from "../models/product.js";
 
 async function getCategories(req, res, next) {
   try {
@@ -61,15 +62,27 @@ async function updateCategory(req, res, next) {
 async function deleteCategory(req, res, next) {
   try {
     const idCategory = req.params.id;
+    const productsCount = await Product.countDocuments({ category: idCategory });
+
+    if (productsCount > 0) {
+      return res.status(400).json({
+        message: "No se puede eliminar la categoría porque tiene productos asociados",
+        productsCount,
+      });
+    }
+
     const deletedCategory = await Category.findByIdAndDelete(idCategory);
+
     if (!deletedCategory) {
       return res.status(404).json({ message: "Category not found" });
     }
-    res.status(204).send();
+
+    return res.status(204).send();
   } catch (error) {
     next(error);
   }
 }
+
 
 async function searchCategories(req, res, next) {
   try {

@@ -1,0 +1,49 @@
+<div class="max-w-5xl mx-auto mt-10 bg-white p-6 rounded-xl shadow">
+
+  <h1 class="text-2xl font-bold mb-6">Productos</h1>
+
+  <div *ngIf="loading" class="text-gray-500 text-sm">
+    Cargando productos...
+  </div>
+
+  <div *ngIf="!loading && products.length === 0" class="text-gray-500 text-sm">
+    No hay productos registrados.
+  </div>
+
+  <ul *ngIf="!loading && products.length > 0" class="space-y-4">
+    <li
+      *ngFor="let p of products"
+      class="p-4 bg-gray-50 border rounded-lg flex gap-4 items-start hover:bg-gray-100 hover:border-gray-300 transition-colors cursor-pointer"
+      [routerLink]="['/product-edit', p._id]"
+    >
+      <img
+        [src]="p.imageUrl || 'https://via.placeholder.com/80x80?text=IMG'"
+        alt="{{ p.name }}"
+        class="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+      />
+
+      <div class="flex-1">
+        <div class="flex justify-between items-start gap-2">
+          <div>
+            <h2 class="font-semibold text-lg text-slate-800">
+              {{ p.name }}
+            </h2>
+            <p class="text-sm text-gray-600 line-clamp-2">
+              {{ p.description }}
+            </p>
+          </div>
+
+          <span class="text-sm font-semibold text-slate-700">
+            {{ p.price | currency:'MXN':'symbol-narrow' }}
+          </span>
+        </div>
+
+        <p class="text-xs text-gray-500 mt-1">
+          Stock: {{ p.stock }} ·
+          Categoría: {{ p.category?.name || 'Sin categoría' }}
+        </p>
+      </div>
+    </li>
+  </ul>
+
+</div>

@@ -82,3 +82,39 @@
   </div>
 
 </div>
+
+<!-- PLACEHOLDER DESKTOP -->
+<div class="wrapper-desktop loading-skeleton" *ngIf="loading">
+  <div class="inner" style="--quantity: 6">
+    <div
+      class="card"
+      *ngFor="let i of [0,1,2,3,4,5]"
+      [style.--index]="i"
+    >
+      <div class="img skeleton">
+        <div class="card-overlay">
+          <div class="skeleton-text title"></div>
+          <div class="skeleton-text price"></div>
+          <div class="skeleton-text offer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLACEHOLDER MOBILE -->
+<div class="wrapper-mobile" *ngIf="loading">
+  <div class="mobile-track">
+    <div class="mobile-card" *ngFor="let i of [0,1,2,3,4]">
+      <div class="mobile-img skeleton"></div>
+
+      <div class="mobile-info">
+        <div class="skeleton-text title"></div>
+        <div class="skeleton-text price"></div>
+        <div class="skeleton-text offer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

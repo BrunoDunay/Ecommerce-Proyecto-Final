@@ -1,31 +1,46 @@
-import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  OnInit,
+  OnDestroy,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectIsAdmin } from '../store/auth/auth.selectors';
-import { take } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Directive({
   selector: '[appAdmin]',
-  standalone:true
+  standalone: true,
 })
-export class AdminDirective implements OnInit{
+export class AdminDirective implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  private hasView = false;
 
   constructor(
     private store: Store,
     private viewContainer: ViewContainerRef,
     private templateRef: TemplateRef<any>
-  ) { 
+  ) {}
 
-  }
   ngOnInit(): void {
-    this.checkAdminAccess()
-  }
-  private checkAdminAccess():void{
-    let role:boolean = false;
-    this.store.select(selectIsAdmin).pipe(take(1)).subscribe({next:(isAdmin)=> role = isAdmin})
-    this.viewContainer.clear();
-    if (role) {
-        this.viewContainer.createEmbeddedView(this.templateRef)
-    }
+    this.store
+      .select(selectIsAdmin)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isAdmin) => {
+        if (isAdmin && !this.hasView) {
+          this.viewContainer.createEmbeddedView(this.templateRef);
+          this.hasView = true;
+        }
+        if (!isAdmin && this.hasView) {
+          this.viewContainer.clear();
+          this.hasView = false;
+        }
+      });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

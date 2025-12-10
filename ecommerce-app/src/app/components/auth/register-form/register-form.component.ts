@@ -14,11 +14,12 @@ import { catchError, debounceTime, of, switchMap } from 'rxjs';
 import { FormFieldComponent } from '../../shared/form-field/form-field.component';
 import * as AuthActions from '../../../core/store/auth/auth.actions';
 import { Store } from '@ngrx/store';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [ReactiveFormsModule, FormFieldComponent],
+  imports: [ReactiveFormsModule, FormFieldComponent, RouterLink],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css',
 })

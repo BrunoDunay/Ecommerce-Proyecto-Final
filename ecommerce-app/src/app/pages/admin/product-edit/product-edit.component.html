@@ -107,10 +107,19 @@
   <div class="flex justify-end mt-10 gap-4">
 
     <button
-      routerLink="/products-list"
+      routerLink="/products"
       class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold"
     >
       Cancelar
+    </button>
+
+    <div class="flex gap-3">
+    <button
+      (click)="onDeleteProduct()"
+      [disabled]="loading"
+      class="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50"
+    >
+      Eliminar producto
     </button>
 
     <button
@@ -120,6 +129,7 @@
     >
       {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
     </button>
+  </div>
 
   </div>
 

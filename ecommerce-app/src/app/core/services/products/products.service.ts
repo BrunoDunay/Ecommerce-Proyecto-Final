@@ -29,12 +29,31 @@ export class ProductsService {
     return this.httpClient.get<Product>(`${this.baseUrl}/${id}`);
   }
 
+  getProductsByCategory(categoryId: string, page: number = 1, limit: number = 1) {
+    return this.httpClient.get<ProductResponse>(
+      `${this.baseUrl}/category/${categoryId}`,
+      { params: { page, limit } }
+    );
+  }
+
   updateProduct(id: string, data: any) {
     return this.httpClient.put(`${this.baseUrl}/${id}`, data);
   }
 
+  deleteProduct(id: string) {
+  return this.httpClient.delete(`${this.baseUrl}/${id}`);
+  }
+
   getCategories() {
     return this.httpClient.get<any[]>(this.categoriesUrl);
+  }
+
+  createCategory(data: { name: string; description: string }) {
+    return this.httpClient.post<any>(this.categoriesUrl, data);
+  }
+
+  deleteCategory(id: string) {
+    return this.httpClient.delete(`${this.categoriesUrl}/${id}`);
   }
 
   searchProducts(searchConfig: filters): Observable<Product[]> {

@@ -1,61 +1,165 @@
 <div class="fixed top-24 right-4 z-20 space-y-3 w-80">
+
+  <!-- Botón Historial -->
   <div class="flex justify-end mb-2">
     <button
       (click)="toggleHistory()"
-      class="bg-gray-600/80 text-white px-3 py-1 rounded-lg text-sm hover:bg-gray-700/80 transition-colors backdrop-blur-sm"
+      class="bg-gray-800/80 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-gray-900/80 transition-colors backdrop-blur-sm border border-gray-700 flex items-center gap-1"
     >
-      {{ showHistory ? "Ocultar" : "Historial" }}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-3.5 h-3.5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.8"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6v6l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      {{ showHistory ? 'Ocultar' : 'Historial' }}
     </button>
   </div>
 
+  <!-- Panel de historial -->
   @if (showHistory) {
-  <div
-    class="bg-gray-800/90 backdrop-blur-sm rounded-xl p-4 max-h-96 overflow-y-auto border border-gray-600"
-  >
-    <div class="flex justify-between items-center mb-3">
-      <h3 class="text-white font-medium text-sm">Últimas Notificaciones</h3>
-      <button
-        class="text-gray-400 hover:text-white text-xs underline"
-      >
-        Limpiar
-      </button>
-    </div>
-
-    @if (toastHistory$ | async; as history) {
-
-    <div class="space-y-2">
-      @for (toast of history; track toast.id) {
-      <div
-        class="p-2 rounded border border-gray-600 text-xs"
-        [ngClass]="{
-          'bg-green-600/30 text-green-100': toast.type === 'success',
-          'bg-red-600/30 text-red-100': toast.type === 'error'
-        }"
-      >
-        <p class="truncate">{{ toast.text }}</p>
-        <small class="text-gray-400">ID: {{ toast.id }}</small>
+    <div
+      class="bg-gray-900/95 backdrop-blur-md rounded-xl p-4 max-h-96 overflow-y-auto border border-gray-700 shadow-2xl"
+    >
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-white font-semibold text-xs uppercase tracking-wide">
+          Últimas notificaciones
+        </h3>
+        <span class="text-[10px] text-gray-400">
+          Máx. 10 recientes
+        </span>
       </div>
-      } @empty {
-      <p class="text-gray-400 text-sm text-center py-4">
-        No hay notificaciones
-      </p>
+
+      @if (toastHistory$ | async; as history) {
+        <div class="space-y-2">
+          @for (toast of history; track toast.id) {
+            <div
+              class="p-2.5 rounded-lg text-[11px] border flex flex-col gap-1"
+              [ngClass]="{
+                'border-[#16a34a] text-[#bbf7d0] bg-[linear-gradient(#16a34a0f,#16a34a0f)]':
+                  toast.type === 'success',
+                'border-[#f97373] text-[#fecaca] bg-[linear-gradient(#f851490f,#f851490f)]':
+                  toast.type === 'error'
+              }"
+            >
+              <div class="flex items-center gap-2">
+                @if (toast.type === 'error') {
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="h-4 w-4 flex-shrink-0"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+                    ></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                  </svg>
+                } @else if (toast.type === 'success') {
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="h-4 w-4 flex-shrink-0"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M9 12.75 11.25 15 15 9.75"></path>
+                    <path
+                      d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    ></path>
+                  </svg>
+                }
+
+                <p class="truncate">
+                  {{ toast.text }}
+                </p>
+              </div>
+              <small class="text-[10px] text-gray-400">
+                ID: {{ toast.id }}
+              </small>
+            </div>
+          } @empty {
+            <p class="text-gray-400 text-xs text-center py-4">
+              No hay notificaciones
+            </p>
+          }
+        </div>
       }
     </div>
+  }
+
+  <!-- TOASTS ACTIVOS -->
+  @if (toasts$ | async; as toasts) {
+    @for (toast of toasts; track toast.id) {
+      <div
+        class="toast-slide-in relative w-full max-w-64 flex flex-wrap items-center justify-center py-3 pl-4 pr-4 rounded-lg text-sm font-medium [transition:all_0.5s_ease] border border-solid group shadow-xl ml-auto"
+        [ngClass]="{
+          'border-[#f85149] text-[#b22b2b] bg-[linear-gradient(#f851491a,#f851491a)]':
+            toast.type === 'error',
+          'border-[#16a34a] text-[#166534] bg-[linear-gradient(#16a34a1a,#16a34a1a)]':
+            toast.type === 'success'
+        }"
+      >
+        <p class="flex flex-row items-center mr-auto gap-x-2">
+          @if (toast.type === 'error') {
+            <!-- Icono error -->
+            <svg
+              stroke="currentColor"
+              fill="none"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-7 w-7 flex-shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+              ></path>
+              <path d="M12 9v4"></path>
+              <path d="M12 17h.01"></path>
+            </svg>
+          } @else if (toast.type === 'success') {
+            <!-- Icono success -->
+            <svg
+              stroke="currentColor"
+              fill="none"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-7 w-7 flex-shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M9 12.75 11.25 15 15 9.75"></path>
+              <path
+                d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              ></path>
+            </svg>
+          }
+
+          <span class="leading-snug">
+            {{ toast.text }}
+          </span>
+        </p>
+      </div>
     }
-  </div>
-  } @if (toasts$ | async; as toasts) { @for (toast of toasts; track toast.id) {
-  <div
-    class="toast-slide-in rounded-xl shadow-lg backdrop-blur-sm border border-white/20 p-4 text-white transform transition-all duration-300 hover:scale-[1.02]"
-    [ngClass]="{
-      'bg-green-500/90': toast.type === 'success',
-      'bg-red-500/90': toast.type === 'error'
-    }"
-  >
-    <div class="flex items-center justify-between">
-      <p class="font-medium text-sm leading-snug">
-        {{ toast.text }}
-      </p>
-    </div>
-  </div>
-  } }
+  }
+
 </div>

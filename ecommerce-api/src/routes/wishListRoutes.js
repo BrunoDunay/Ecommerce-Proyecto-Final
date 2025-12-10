@@ -9,7 +9,7 @@ import {
   checkProductInWishList,
   moveToCart
 } from '../controllers/wishListController.js';
-import authMiddleware from '../middlewares/auth.js'; // Middleware de autenticación
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 

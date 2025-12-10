@@ -1,1 +1,155 @@
-<p>wish-list works!</p>
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
+      Mi lista de deseos
+    </h1>
+
+    <p class="text-gray-600 mt-1" *ngIf="wishlist as wl">
+      {{ wl.products.length }} productos
+    </p>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <button
+      *ngIf="hasItems"
+      (click)="clearAll()"
+      class="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors text-sm"
+    >
+      Vaciar lista
+    </button>
+
+    <a
+      routerLink="/products"
+      class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+    >
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7 7-7M3 12h18"
+        ></path>
+      </svg>
+      Volver a productos
+    </a>
+  </div>
+</div>
+
+    @if (loading) {
+    <div class="space-y-4">
+      @for (_ of [1, 2, 3]; track _) {
+      <div
+        class="bg-white rounded-xl shadow-sm p-4 flex gap-4 animate-pulse"
+      >
+        <div class="w-20 h-20 bg-gray-200 rounded-lg"></div>
+        <div class="flex-1 space-y-2">
+          <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+          <div class="h-3 bg-gray-200 rounded w-4/5"></div>
+          <div class="h-3 bg-gray-200 rounded w-1/3"></div>
+        </div>
+      </div>
+      }
+    </div>
+    } @else if (!hasItems) {
+    <div class="text-center py-12">
+      <svg
+        class="w-24 h-24 mx-auto text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+        ></path>
+      </svg>
+      <h2 class="text-2xl font-bold text-gray-800 mt-4">
+        Tu lista de deseos está vacía
+      </h2>
+      <p class="text-gray-600 mt-2">
+        Explora nuestros productos y guarda tus favoritos aquí.
+      </p>
+      <a
+        routerLink="/products"
+        class="inline-block mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        Ver productos
+      </a>
+    </div>
+    } @else {
+    <div class="space-y-4">
+      @for (item of wishlist!.products; track item.product._id) {
+      <div class="bg-white rounded-xl shadow-sm p-4 flex gap-4 items-stretch">
+        <div class="w-24 h-24 flex-shrink-0">
+          <img
+            [src]="item.product.imageUrl || 'https://via.placeholder.com/150'"
+            class="w-full h-full object-cover rounded-lg"
+            [alt]="item.product.name"
+          />
+        </div>
+
+        <div class="flex-1 flex flex-col justify-between">
+          <div>
+            <h2 class="text-base sm:text-lg font-semibold text-gray-900">
+              {{ item.product.name }}
+            </h2>
+            <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+              {{ item.product.description }}
+            </p>
+          </div>
+
+          <div class="mt-2 flex items-center gap-3">
+            <span class="text-sm font-bold text-gray-900">
+              {{
+                item.product.price
+                  | currency : "MXN" : "symbol-narrow"
+              }}
+            </span>
+            <span
+              class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
+            >
+              Stock: {{ item.product.stock }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2 justify-center">
+          <button
+            (click)="addToCart(item.product._id)"
+            [disabled]="isAddingToCart(item.product._id)"
+            class="px-3 py-2 rounded-lg bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {{
+              isAddingToCart(item.product._id)
+                ? "Agregando..."
+                : "Agregar al carrito"
+            }}
+          </button>
+
+          <button
+            (click)="removeItem(item.product._id)"
+            [disabled]="isRemoving(item.product._id)"
+            class="px-3 py-2 rounded-lg bg-red-50 text-red-600 text-xs sm:text-sm font-semibold hover:bg-red-100 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {{
+              isRemoving(item.product._id)
+                ? "Quitando..."
+                : "Quitar de la lista"
+            }}
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

@@ -50,12 +50,23 @@ export const routes: Routes = [
   {
   path: 'admin/users',
   loadComponent: () => import('./pages/admin/users/users.component')
-    .then(c => c.AdminUsersComponent)
+    .then(c => c.AdminUsersComponent),
+  canActivate: [authGuard],
+  title: 'Admin Users'
 },
 {
   path: 'admin/categories',
-  loadComponent: () => import('./pages/admin/categories/categories.component')
-    .then(c => c.AdminCategoriesComponent)
+  loadComponent: () => import('./pages/admin/admin-categories/categories.component')
+    .then(c => c.AdminCategoriesComponent),
+  canActivate: [authGuard],
+  title: 'Admin Categories'
+},
+{
+  path : 'admin/products',
+  loadComponent: () => import('./pages/admin/admin-products/products.component')
+    .then(c => c.AdminProductsComponent),
+  canActivate: [authGuard],
+  title: 'Admin Products'
 }
   
 

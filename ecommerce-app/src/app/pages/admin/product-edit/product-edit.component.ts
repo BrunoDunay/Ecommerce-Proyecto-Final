@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,7 @@ import { Product } from '../../../core/types/Products';
 @Component({
   selector: 'app-product-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './product-edit.component.html'
 })
 export class ProductEditComponent implements OnInit {
@@ -102,4 +102,24 @@ export class ProductEditComponent implements OnInit {
       }
     });
   }
+
+  onDeleteProduct() {
+  const confirmed = confirm(
+    '¿Seguro que quieres eliminar este producto?\nEsta acción no se puede deshacer.'
+  );
+  if (!confirmed) return;
+
+  this.loading = true;
+
+  this.productsService.deleteProduct(this.productId).subscribe({
+    next: () => {
+      this.loading = false;
+      this.router.navigate(['/products-list']);
+    },
+    error: (err) => {
+      this.loading = false;
+      console.error('Error al eliminar', err);
+    }
+  });
+}
 }
