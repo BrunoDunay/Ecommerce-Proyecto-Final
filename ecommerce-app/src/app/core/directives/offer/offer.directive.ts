@@ -7,7 +7,7 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 export class OfferDirective {
   @Input() set appOffer(offer: number){
     this.viewContainer.clear();
-    if (offer >=10) {
+    if (offer >=1) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     }
   }

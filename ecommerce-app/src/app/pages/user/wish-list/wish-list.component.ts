@@ -1,4 +1,3 @@
-// src/app/pages/user/wish-list/wish-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -7,6 +6,7 @@ import { take } from 'rxjs';
 import { WishlistService } from '../../../core/services/wishList/wish-list.service';
 import { CartService } from '../../../core/services/cart/cart.service';
 import { WishList } from '../../../core/types/Wishlist';
+import { getFinalPrice } from '../../../core/utils/pricing';
 
 @Component({
   selector: 'app-wishlist',
@@ -19,6 +19,7 @@ export class WishlistComponent implements OnInit {
   wishlist: WishList | null = null;
   loading = true;
 
+  // para spinners individuales
   removingIds = new Set<string>();
   addingToCartIds = new Set<string>();
 
@@ -31,6 +32,16 @@ export class WishlistComponent implements OnInit {
     this.loadWishlist();
   }
 
+  /**
+   * Wrapper para usar el util de pricing
+   */
+  getFinalPrice(product: { price: number; offer?: number | null }) {
+    return getFinalPrice(product);
+  }
+
+  /**
+   * Cargar wishlist del usuario
+   */
   private loadWishlist(): void {
     this.loading = true;
 
@@ -54,6 +65,9 @@ export class WishlistComponent implements OnInit {
     return !!this.wishlist?.products?.length;
   }
 
+  /**
+   * Quitar producto de wishlist
+   */
   removeItem(productId: string): void {
     if (this.removingIds.has(productId)) return;
 
@@ -74,6 +88,9 @@ export class WishlistComponent implements OnInit {
       });
   }
 
+  /**
+   * Pasar un producto al carrito y quitarlo de wishlist
+   */
   addToCart(productId: string): void {
     if (this.addingToCartIds.has(productId)) return;
 
@@ -102,6 +119,9 @@ export class WishlistComponent implements OnInit {
     return this.addingToCartIds.has(productId);
   }
 
+  /**
+   * Vaciar wishlist completa
+   */
   clearAll(): void {
     if (!this.hasItems) return;
 

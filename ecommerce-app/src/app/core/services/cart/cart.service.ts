@@ -15,6 +15,7 @@ import { ToastService } from '../toast/toast.service';
 import { Store } from '@ngrx/store';
 import { selectUserId } from '../../store/auth/auth.selectors';
 import { environment } from '../../../../environments/environment';
+import { getFinalPrice } from '../../utils/pricing';
 
 @Injectable({
   providedIn: 'root',
@@ -88,7 +89,9 @@ export class CartService {
     const userId = this.getUserId();
     if (!userId) {
       console.log('usuario no autentificado');
-      this.toast.error('Debes iniciar sesión para agregar productos al carrito');
+      this.toast.error(
+        'Debes iniciar sesión para agregar productos al carrito'
+      );
       return of(null);
     }
 
@@ -168,25 +171,21 @@ export class CartService {
         if (!cart || cart.products.length === 0) {
           return 0;
         }
-        return cart.products.reduce(
-          (total, item) => total + item.quantity,
-          0
-        );
+        return cart.products.reduce((total, item) => total + item.quantity, 0);
       })
     );
   }
 
   getCartTotal(): Observable<number> {
     return this.cart$.pipe(
-      map((cart) => {
-        if (!cart || cart.products.length === 0) {
-          return 0;
-        }
-        return cart.products.reduce(
-          (total, item) => total + item.product.price * item.quantity,
-          0
-        );
-      })
+      map((cart) =>
+        cart
+          ? cart.products.reduce(
+              (acc, item) => acc + getFinalPrice(item.product) * item.quantity,
+              0
+            )
+          : 0
+      )
     );
   }
 }

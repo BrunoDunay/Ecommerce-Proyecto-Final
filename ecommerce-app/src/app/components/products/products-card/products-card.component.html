@@ -55,12 +55,18 @@
       </p>
 
       <div class="mb-4">
-        <span class="text-xl font-bold text-gray-900">
-          {{ product.price | currency:'MXN':'symbol-narrow' }}
-        </span>
-        <div class="text-xs text-gray-500 mt-1">
-          Stock: {{ product.stock }}
+        <div class="flex items-baseline gap-2">
+          <span class="text-lg font-bold text-gray-900">
+            {{ getFinalPrice(product) | currency:'MXN':'symbol-narrow' }}
+          </span>
+
+          @if (product.offer && product.offer > 0) {
+          <span class="text-xs line-through text-gray-400">
+            {{ product.price | currency:'MXN':'symbol-narrow' }}
+          </span>
+          }
         </div>
+        <div class="text-xs text-gray-500 mt-1">Stock: {{ product.stock }}</div>
       </div>
 
       <div class="flex items-center gap-2 mt-auto">

@@ -9,7 +9,7 @@ import { OrderService } from '../../../core/services/order/order.service';
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [AsyncPipe, CurrencyPipe, DatePipe, NgClass, RouterLink],
+  imports: [AsyncPipe, CurrencyPipe, NgClass, RouterLink],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css',
 })

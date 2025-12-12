@@ -6,6 +6,7 @@ export const wishlistProductSchema = z.object({
   name: z.string(),
   description: z.string(),
   price: z.number(),
+  offer: z.number().optional().nullable(),  
   stock: z.number(),
   imageUrl: z.string().optional().nullable(),
 });

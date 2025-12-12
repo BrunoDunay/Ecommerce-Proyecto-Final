@@ -1,53 +1,51 @@
 <div class="min-h-screen bg-gray-50 py-8">
   <div class="max-w-6xl mx-auto px-4">
     <div class="flex items-center justify-between mb-6">
-  <div>
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
-      Mi lista de deseos
-    </h1>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
+          Mi lista de deseos
+        </h1>
 
-    <p class="text-gray-600 mt-1" *ngIf="wishlist as wl">
-      {{ wl.products.length }} productos
-    </p>
-  </div>
+        <p class="text-gray-600 mt-1" *ngIf="wishlist as wl">
+          {{ wl.products.length }} productos
+        </p>
+      </div>
 
-  <div class="flex items-center gap-3">
-    <button
-      *ngIf="hasItems"
-      (click)="clearAll()"
-      class="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors text-sm"
-    >
-      Vaciar lista
-    </button>
+      <div class="flex items-center gap-3">
+        <button
+          *ngIf="hasItems"
+          (click)="clearAll()"
+          class="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors text-sm"
+        >
+          Vaciar lista
+        </button>
 
-    <a
-      routerLink="/products"
-      class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
-    >
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 19l-7-7 7-7M3 12h18"
-        ></path>
-      </svg>
-      Volver a productos
-    </a>
-  </div>
-</div>
+        <a
+          routerLink="/products"
+          class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7 7-7M3 12h18"
+            ></path>
+          </svg>
+          Volver a productos
+        </a>
+      </div>
+    </div>
 
     @if (loading) {
     <div class="space-y-4">
       @for (_ of [1, 2, 3]; track _) {
-      <div
-        class="bg-white rounded-xl shadow-sm p-4 flex gap-4 animate-pulse"
-      >
+      <div class="bg-white rounded-xl shadow-sm p-4 flex gap-4 animate-pulse">
         <div class="w-20 h-20 bg-gray-200 rounded-lg"></div>
         <div class="flex-1 space-y-2">
           <div class="h-4 bg-gray-200 rounded w-2/3"></div>
@@ -57,6 +55,7 @@
       </div>
       }
     </div>
+
     } @else if (!hasItems) {
     <div class="text-center py-12">
       <svg
@@ -85,10 +84,21 @@
         Ver productos
       </a>
     </div>
+
     } @else {
     <div class="space-y-4">
       @for (item of wishlist!.products; track item.product._id) {
-      <div class="bg-white rounded-xl shadow-sm p-4 flex gap-4 items-stretch">
+      <div
+        class="bg-white rounded-xl shadow-sm p-4 flex gap-4 items-stretch relative"
+      >
+        @if (item.product.offer && item.product.offer > 0) {
+        <span
+          class="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full shadow-md"
+        >
+          -{{ item.product.offer }}%
+        </span>
+        }
+
         <div class="w-24 h-24 flex-shrink-0">
           <img
             [src]="item.product.imageUrl || 'https://via.placeholder.com/150'"
@@ -97,6 +107,7 @@
           />
         </div>
 
+        <!-- Info del producto -->
         <div class="flex-1 flex flex-col justify-between">
           <div>
             <h2 class="text-base sm:text-lg font-semibold text-gray-900">
@@ -108,12 +119,23 @@
           </div>
 
           <div class="mt-2 flex items-center gap-3">
-            <span class="text-sm font-bold text-gray-900">
-              {{
-                item.product.price
-                  | currency : "MXN" : "symbol-narrow"
-              }}
-            </span>
+            <div class="flex flex-col">
+              <!-- Precio con descuento -->
+              <span class="text-sm font-semibold text-gray-900">
+                {{
+                  getFinalPrice(item.product)
+                    | currency : "MXN" : "symbol-narrow"
+                }}
+              </span>
+
+              <!-- Precio original tachado -->
+              @if (item.product.offer && item.product.offer > 0) {
+              <span class="text-xs line-through text-gray-400">
+                {{ item.product.price | currency : "MXN" : "symbol-narrow" }}
+              </span>
+              }
+            </div>
+
             <span
               class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
             >
@@ -122,6 +144,7 @@
           </div>
         </div>
 
+        <!-- Botones acciones -->
         <div class="flex flex-col gap-2 justify-center">
           <button
             (click)="addToCart(item.product._id)"

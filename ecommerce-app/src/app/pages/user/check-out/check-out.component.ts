@@ -18,6 +18,7 @@ import { PaymentMethodsListComponent } from '../../../components/payment/payment
 import { ShippingAddressListComponent } from '../../../components/shipping/shipping-address-list/shipping-address-list.component';
 import { ShippingAddress } from '../../../core/types/ShippingAddress';
 import { ShippingAddressService } from '../../../core/services/shippingAddress/shipping-address.service';
+import { getFinalPrice } from '../../../core/utils/pricing';
 
 @Component({
   selector: 'app-check-out',
@@ -43,10 +44,14 @@ export class CheckOutComponent {
   paymentMethodId: string = '';
   shippingAddressId: string = '';
 
+  getFinalPrice(product: { price: number; offer?: number | null }) {
+    return getFinalPrice(product);
+  }
+
   total = computed(
     () =>
       this.cartSig()?.products.reduce(
-        (acc, p) => acc + p.product.price * p.quantity,
+        (acc, p) => acc + getFinalPrice(p.product) * p.quantity,
         0
       ) || 0
   );
@@ -119,12 +124,17 @@ export class CheckOutComponent {
       products: cart.products.map((p) => ({
         productId: p.product._id,
         quantity: p.quantity,
-        price: p.product.price,
+        // precio FINAL por producto con descuento ya aplicado
+        price: getFinalPrice({
+          price: p.product.price,
+          offer: p.product.offer,
+        }),
       })),
+      // total FINAL con descuentos aplicados
       totalPrice: this.total(),
       status: 'pending',
-      shippingAddress: this.shippingAddressId,   // 👈 usamos la dirección seleccionada
-      paymentMethod: this.paymentMethodId,       // 👈 usamos el método seleccionado
+      shippingAddress: this.shippingAddressId,
+      paymentMethod: this.paymentMethodId,
       shippingCost: 0,
     } as unknown as Order;
 

@@ -6,6 +6,7 @@ import { AdminDirective } from '../../../core/directives/admin.directive';
 import { OfferDirective } from '../../../core/directives/offer/offer.directive';
 import { CartService } from '../../../core/services/cart/cart.service';
 import { take } from 'rxjs';
+import { getFinalPrice } from '../../../core/utils/pricing';
 
 @Component({
   selector: 'app-products-card',
@@ -29,5 +30,8 @@ export class ProductsCardComponent {
         this.loading = false;
       },
     });
+  }
+  getFinalPrice(product: Product): number {
+    return getFinalPrice(product);
   }
 }

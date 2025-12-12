@@ -18,7 +18,6 @@ export class AdminProductsComponent implements OnInit {
   constructor(private productsService: ProductsService) {}
 
   ngOnInit(): void {
-    // Puedes ajustar el limit si quieres más o menos
     this.productsService.getProducts(1, 50).subscribe({
       next: (res) => {
         this.products = res.products;

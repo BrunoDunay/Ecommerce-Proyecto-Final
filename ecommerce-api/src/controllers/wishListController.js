@@ -1,13 +1,19 @@
 import WishList from '../models/wishList.js';
 import Product from '../models/product.js';
 
+// Campos que queremos del producto cuando está en wishlist
+const WISHLIST_PRODUCT_FIELDS =
+  'name description price offer imageUrl stock'; 
+// si tu Product tiene category y la quieres mostrar, puedes usar:
+// 'name description price offer imageUrl stock category';
+
 const getUserWishList = async (req, res, next) => {
   try {
     const userId = req.user.userId;
 
     let wishList = await WishList.findOne({ user: userId }).populate(
       'products.product',
-      'name description price imageUrl stock'
+      WISHLIST_PRODUCT_FIELDS
     );
 
     if (!wishList) {
@@ -57,10 +63,7 @@ const addToWishList = async (req, res, next) => {
     }
 
     await wishList.save();
-    await wishList.populate(
-      'products.product',
-      'name description price imageUrl stock'
-    );
+    await wishList.populate('products.product', WISHLIST_PRODUCT_FIELDS);
 
     res.status(200).json({
       message: 'Product added to wishlist successfully',
@@ -94,10 +97,7 @@ const removeFromWishList = async (req, res, next) => {
 
     wishList.products.splice(productIndex, 1);
     await wishList.save();
-    await wishList.populate(
-      'products.product',
-      'name description price imageUrl stock'
-    );
+    await wishList.populate('products.product', WISHLIST_PRODUCT_FIELDS);
 
     res.status(200).json({
       message: 'Product removed from wishlist successfully',
@@ -120,10 +120,7 @@ const clearWishList = async (req, res, next) => {
 
     wishList.products = [];
     await wishList.save();
-    await wishList.populate(
-      'products.product',
-      'name description price imageUrl stock'
-    );
+    await wishList.populate('products.product', WISHLIST_PRODUCT_FIELDS);
 
     res.status(200).json({
       message: 'Wishlist cleared successfully',
@@ -186,10 +183,7 @@ const moveToCart = async (req, res, next) => {
 
     wishList.products.splice(productIndex, 1);
     await wishList.save();
-    await wishList.populate(
-      'products.product',
-      'name description price imageUrl stock'
-    );
+    await wishList.populate('products.product', WISHLIST_PRODUCT_FIELDS);
 
     res.status(200).json({
       message: 'Product moved to cart and removed from wishlist',

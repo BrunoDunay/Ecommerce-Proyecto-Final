@@ -31,4 +31,5 @@ export const cartProductSchema = z.object({
   imageUrl: z.string().optional(),
   stock: z.number(),
   category: z.string(),
+  offer: z.number().optional().nullable(),   
 });

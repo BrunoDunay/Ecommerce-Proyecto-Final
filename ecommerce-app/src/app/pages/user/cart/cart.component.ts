@@ -4,6 +4,7 @@ import { CartService } from '../../../core/services/cart/cart.service';
 import { Cart } from '../../../core/types/Cart';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { getFinalPrice } from '../../../core/utils/pricing';
 
 @Component({
   selector: 'app-cart',
@@ -16,6 +17,11 @@ export class CartComponent implements OnInit {
   cart$: Observable<Cart | null> = of(null);
   cartTotal$: Observable<number> = of(0);
   cartItemCount$: Observable<number> = of(0);
+
+  getFinalPrice(product: { price: number; offer?: number | null }) {
+    return getFinalPrice(product);
+  }
+
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
