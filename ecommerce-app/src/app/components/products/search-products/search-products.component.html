@@ -1,21 +1,22 @@
 <div class="relative">
   <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-60">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-
       <div class="flex items-center">
         <a routerLink="/" class="flex items-center gap-2">
           <div
             class="w-9 h-9 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm"
           >
-            T
+            F
           </div>
           <span class="font-bold text-slate-800 hidden sm:inline">
-            TechStore
+            FunkoTeka
           </span>
         </a>
       </div>
 
-      <div class="hidden md:flex flex-1 justify-center gap-6 text-sm sm:text-base">
+      <div
+        class="hidden md:flex flex-1 justify-center gap-6 text-sm sm:text-base"
+      >
         <a
           routerLink="/"
           routerLinkActive="text-orange-600 font-semibold"
@@ -30,6 +31,14 @@
           class="text-slate-700 hover:text-orange-500 transition-colors"
         >
           Productos
+        </a>
+
+        <a
+          routerLink="/categories"
+          routerLinkActive="text-orange-600 font-semibold"
+          class="text-slate-700 hover:text-orange-500 transition-colors"
+        >
+          Categorías
         </a>
 
         <a
@@ -74,43 +83,46 @@
           </div>
         </form>
       </div>
-
     </div>
   </nav>
 
   @if (searchProductForm.get('q')?.value &&
-       searchProductForm.get('q')?.value!.length > 0) {
+  searchProductForm.get('q')?.value!.length > 0) {
 
-    <div
-      class="absolute top-full left-0 right-0 z-40 bg-white shadow-xl border-t max-w-6xl mx-auto"
-    >
-      <div class="p-4">
-        @if (products$ | async; as products ) {
-          <div
-            class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto"
-          >
-            @for (product of products; track $index) {
-              <div
-                class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
-                [routerLink]="['/product-view', product._id]"
-              >
-                <div class="w-12 h-12 bg-gray-200 rounded flex-shrink-0"></div>
-                <div class="flex-1 min-w-0">
-                  <h4 class="text-sm text-gray-700 truncate">{{ product.name }}</h4>
-                  <p class="text-xs text-gray-500">
-                    {{ product.price | currency:'MXN':'symbol-narrow' }}
-                  </p>
-                </div>
-              </div>
-            } @empty {
-              <div class="text-center py-4 text-gray-500">
-                No se encontraron productos
-              </div>
-            }
+  <div
+    class="absolute top-full left-0 right-0 z-40 bg-white shadow-xl border-t max-w-6xl mx-auto"
+  >
+    <div class="p-4">
+      @if (products$ | async; as products ) {
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto"
+      >
+        @for (product of products; track $index) {
+        <div
+          class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+          [routerLink]="['/product-view', product._id]"
+        >
+          <img
+            [src]="product.imageUrl"
+            [alt]="product.name"
+            class="w-12 h-12 rounded object-cover bg-gray-100 flex-shrink-0"
+          />
+          <div class="flex-1 min-w-0">
+            <h4 class="text-sm text-gray-700 truncate">{{ product.name }}</h4>
+            <p class="text-xs text-gray-500">
+              {{ product.price | currency : "MXN" : "symbol-narrow" }}
+            </p>
           </div>
+        </div>
+        } @empty {
+        <div class="text-center py-4 text-gray-500">
+          No se encontraron productos
+        </div>
         }
       </div>
+      }
     </div>
+  </div>
 
   }
 </div>

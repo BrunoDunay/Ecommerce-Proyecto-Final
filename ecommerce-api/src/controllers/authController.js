@@ -32,7 +32,7 @@ async function register(req, res, next) {
     if (userExist) {
       return res.status(400).json({ message: 'User already exist' });
     }
-    let role = 'guest';
+    let role = 'customer';
     const hashPassword = await generatePassword(password);
     const newUser = new User({
       displayName,
@@ -53,22 +53,28 @@ async function login(req, res, next) {
   try {
     const { email, password } = req.body;
     const userExist = await checkUserExist(email);
+
     if (!userExist) {
       return res.status(400).json({ message: 'User does not exist. You must to sign in' });
     }
-    console.log(userExist);
+
+    if (userExist.isActive === false) {
+      return res.status(403).json({ message: 'Account is deactivated' });
+    }
+
     const isMatch = await bcrypt.compare(password, userExist.hashPassword);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
+
     const token = generateToken(userExist._id, userExist.displayName, userExist.role);
     const refreshToken = generateRefreshToken(userExist._id);
-    res.status(200).json({ token, refreshToken:refreshToken.token });
+    res.status(200).json({ token, refreshToken: refreshToken.token });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }
+
 const checkEmailAlredyRegistered = async (req, res, next) => {
   try {
     const { email } = req.query;
@@ -79,22 +85,28 @@ const checkEmailAlredyRegistered = async (req, res, next) => {
     next(error)
   }
 };
+
 const refreshToken = async (req, res, next) => {
   try {
     const { token } = req.body;
     const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-    const user = await User.findById(decoded.userId);
-    if (user) {
-      const newToken = generateToken(user._id, user.name, user.role);
 
-      res.status(200).json({ token: newToken });
-    } else {
-      res.status(401).json({ message: 'Invalid refresh token' });
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid refresh token' });
     }
+
+    if (user.isActive === false) {
+      return res.status(403).json({ message: 'Account is deactivated' });
+    }
+
+    const newToken = generateToken(user._id, user.displayName, user.role);
+    res.status(200).json({ token: newToken });
   } catch (error) {
     next(error);
   }
 };
+
 
 export { register, login,checkEmailAlredyRegistered, refreshToken };
 

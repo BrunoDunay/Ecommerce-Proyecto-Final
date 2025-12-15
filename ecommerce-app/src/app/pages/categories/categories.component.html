@@ -1,0 +1,92 @@
+<div class="max-w-6xl mx-auto mt-10 px-4">
+  <h2 class="text-3xl text-slate-800 text-center font-semibold mb-6">
+    Categorías
+  </h2>
+
+  <div *ngIf="loadingCategories" class="text-center text-gray-500">
+    Cargando categorías...
+  </div>
+
+  <div *ngIf="!loadingCategories && errorMsg" class="text-center text-red-600">
+    {{ errorMsg }}
+  </div>
+
+  <div *ngIf="!loadingCategories && !errorMsg" class="flex flex-wrap justify-center gap-2 mb-6">
+    <button
+      type="button"
+      class="px-4 py-2 text-sm rounded-full border transition
+             hover:bg-gray-100"
+      [ngClass]="selectedCategoryId === 'ALL'
+        ? 'border-blue-600 text-blue-700 font-semibold'
+        : 'border-gray-200 text-gray-700'"
+      (click)="selectCategory('ALL')"
+    >
+      Todas
+    </button>
+
+    <button
+      *ngFor="let c of categories"
+      type="button"
+      class="px-4 py-2 text-sm rounded-full border transition
+             hover:bg-gray-100"
+      [ngClass]="selectedCategoryId === c._id
+        ? 'border-blue-600 text-blue-700 font-semibold'
+        : 'border-gray-200 text-gray-700'"
+      (click)="selectCategory(c._id)"
+    >
+      {{ c.name }}
+    </button>
+  </div>
+
+  <div class="text-center mb-4">
+    <p class="text-gray-500 text-sm" *ngIf="selectedCategoryName">
+      Mostrando: <span class="font-semibold text-gray-800">{{ selectedCategoryName }}</span>
+    </p>
+  </div>
+
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-6 gap-4 md:gap-4 max-w-5xl mx-auto"
+  >
+    @defer (on viewport) {
+      @for (product of productResponse.products; track product._id) {
+        <app-products-card [product]="product"></app-products-card>
+      }
+    }
+    @placeholder {
+      <div class="col-span-full text-center py-8">
+        <div class="bg-gray-100 rounded-lg p-6 border-2 border-dashed border-gray-300">
+          <p class="text-gray-600">Los productos se cargarán cuando entren en vista</p>
+        </div>
+      </div>
+    }
+    @loading (minimum 300ms) {
+      @for (skeleton of skeletonArray; track $index) {
+        <app-placeholder></app-placeholder>
+      }
+    }
+    @error {
+      <div class="col-span-full text-center py-8">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-red-800 mb-2">Error al cargar productos</h3>
+          <button
+            class="bg-red-600 text-white px-4 py-2 rounded-lg"
+            (click)="retry()"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="w-full" *ngIf="productResponse?.pagination">
+    <mat-paginator
+      [length]="productResponse.pagination.totalResults"
+      [pageSize]="16"
+      [pageSizeOptions]="[16, 32, 64]"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>

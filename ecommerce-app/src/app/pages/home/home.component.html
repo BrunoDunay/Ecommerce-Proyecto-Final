@@ -1,21 +1,15 @@
 <div class="home-hero-container">
-
   <div class="hero-text">
-    <h1 class="hero-title">
-      Equipa tu setup de cómputo
-    </h1>
+    <h1 class="hero-title">Arma tu vitrina de Funkos</h1>
     <p class="hero-subtitle">
-      Descubre laptops, monitores, teclados, mouses, almacenamiento y más.
-      Productos con las mejores ofertas, rotando en nuestro carrusel 3D.
+      Descubre Funkos de Marvel, DC, Arcane, Game of Thrones y más. Figuras con
+      ofertas destacadas rotando en nuestro carrusel 3D.
     </p>
   </div>
 
   <!-- Carrusel 3D (solo desktop) -->
   <div class="wrapper-desktop" *ngIf="!loading && products.length > 0">
-    <div
-      class="inner"
-      [style.--quantity]="products.length"
-    >
+    <div class="inner" [style.--quantity]="products.length">
       <a
         class="card"
         *ngFor="let product of products; index as i"
@@ -33,7 +27,7 @@
               {{ product.name }}
             </h3>
             <p class="card-price">
-              {{ product.price | currency:'MXN':'symbol-narrow' }}
+              {{ product.price | currency : "MXN" : "symbol-narrow" }}
             </p>
             <p class="card-offer" *ngIf="product.offer > 0">
               -{{ product.offer }}% de descuento
@@ -46,32 +40,31 @@
 
   <!-- Carrusel horizontal (solo móvil) -->
   <div class="wrapper-mobile" *ngIf="products.length > 0 && !loading">
-  <div
-    class="mobile-track"
-    #mobileTrack
-  >
-    <a
-      class="mobile-card"
-      *ngFor="let product of products; index as i"
-      [routerLink]="['/product-view', product._id]"
-    >
-      <div
-        class="mobile-img"
-        [ngStyle]="{
-          'background-image': 'url(' + product.imageUrl + ')'
-        }"
-      ></div>
+    <div class="mobile-track" #mobileTrack>
+      <a
+        class="mobile-card"
+        *ngFor="let product of products; index as i"
+        [routerLink]="['/product-view', product._id]"
+      >
+        <div
+          class="mobile-img"
+          [ngStyle]="{
+            'background-image': 'url(' + product.imageUrl + ')'
+          }"
+        ></div>
 
-      <div class="mobile-info">
-        <h3 class="mobile-title">{{ product.name }}</h3>
-        <p class="mobile-price">{{ product.price | currency:'MXN':'symbol-narrow' }}</p>
-        <p class="mobile-offer" *ngIf="product.offer > 0">
-          -{{ product.offer }}%
-        </p>
-      </div>
-    </a>
+        <div class="mobile-info">
+          <h3 class="mobile-title">{{ product.name }}</h3>
+          <p class="mobile-price">
+            {{ product.price | currency : "MXN" : "symbol-narrow" }}
+          </p>
+          <p class="mobile-offer" *ngIf="product.offer > 0">
+            -{{ product.offer }}%
+          </p>
+        </div>
+      </a>
+    </div>
   </div>
-</div>
 
   <div *ngIf="loading" class="loading-text">
     Cargando productos destacados...
@@ -80,17 +73,12 @@
   <div *ngIf="!loading && products.length === 0" class="loading-text">
     No hay productos disponibles por ahora.
   </div>
-
 </div>
 
 <!-- PLACEHOLDER DESKTOP -->
 <div class="wrapper-desktop loading-skeleton" *ngIf="loading">
   <div class="inner" style="--quantity: 6">
-    <div
-      class="card"
-      *ngFor="let i of [0,1,2,3,4,5]"
-      [style.--index]="i"
-    >
+    <div class="card" *ngFor="let i of [0, 1, 2, 3, 4, 5]" [style.--index]="i">
       <div class="img skeleton">
         <div class="card-overlay">
           <div class="skeleton-text title"></div>
@@ -105,7 +93,7 @@
 <!-- PLACEHOLDER MOBILE -->
 <div class="wrapper-mobile" *ngIf="loading">
   <div class="mobile-track">
-    <div class="mobile-card" *ngFor="let i of [0,1,2,3,4]">
+    <div class="mobile-card" *ngFor="let i of [0, 1, 2, 3, 4]">
       <div class="mobile-img skeleton"></div>
 
       <div class="mobile-info">
@@ -116,5 +104,3 @@
     </div>
   </div>
 </div>
-
-

@@ -112,7 +112,7 @@ export class ProductDetailComponent implements OnInit {
   onWishlistClick() {
     if (!this.isLoggedIn) {
       this.toast.error('Debes iniciar sesión para usar la lista de deseos');
-      this.router.navigate(['/auth/login'], {
+      this.router.navigate(['/login'], {
         queryParams: { returnUrl: this.router.url },
       });
       return;

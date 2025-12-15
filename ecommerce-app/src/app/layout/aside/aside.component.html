@@ -52,7 +52,7 @@
     <div class="flex-1 p-4 overflow-y-auto">
       @if (user$ | async; as user ) {
       <app-side-menu
-        [title]="`Willkommen ${user.displayName}`"
+        [title]="`Usuario: ${user.displayName}`"
         [navRoutes]="authRoutes"
       ></app-side-menu>
       

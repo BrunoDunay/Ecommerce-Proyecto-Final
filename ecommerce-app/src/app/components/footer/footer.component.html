@@ -1,0 +1,93 @@
+<footer class="mt-16 bg-slate-800 border-t border-slate-600 text-slate-300">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <a routerLink="/" class="flex items-center gap-2">
+          <div
+            class="w-10 h-10 rounded-full bg-white text-slate-800 flex items-center justify-center font-bold"
+          >
+            F
+          </div>
+          <span class="font-bold text-white text-lg">
+            FunkoTeka
+          </span>
+        </a>
+
+        <p class="text-sm text-slate-400 mt-3 leading-relaxed">
+          Tu tienda de funkos para armar la colección perfecta.
+          Marvel, DC, Arcane y más.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-3">Tienda</h4>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a routerLink="/products" class="hover:text-white transition">
+              Funkos
+            </a>
+          </li>
+          <li>
+            <a routerLink="/categories" class="hover:text-white transition">
+              Categorías
+            </a>
+          </li>
+          <li>
+            <a routerLink="/user/cart" class="hover:text-white transition">
+              Carrito
+            </a>
+          </li>
+          <li>
+            <a routerLink="/user/wishlist" class="hover:text-white transition">
+              Wishlist
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-3">Colecciones</h4>
+        <ul class="space-y-2 text-sm">
+          <li>Marvel</li>
+          <li>DC</li>
+          <li>Arcane</li>
+          <li>Game of Thrones</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-3">Soporte</h4>
+        <ul class="space-y-2 text-sm">
+          <li>📦 Envíos a todo México</li>
+          <li>💬 Atención Lun–Vie</li>
+          <li>
+            ✉️
+            <a
+              href="mailto:soporte@funkostore.com"
+              class="hover:text-white transition"
+            >
+              soporte-funkostore.com
+            </a>
+          </li>
+          <li>📍 Aguascalientes, MX</li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 pt-6 border-t border-slate-600 flex flex-col sm:flex-row items-center justify-between gap-3"
+    >
+      <p class="text-sm text-slate-400">
+        © {{ year }} FunkoStore. Todos los derechos reservados.
+      </p>
+
+      <div class="flex items-center gap-4 text-sm text-slate-400">
+        <a href="#" class="hover:text-white transition">Privacidad</a>
+        <a href="#" class="hover:text-white transition">Términos</a>
+        <a href="#" class="hover:text-white transition">Devoluciones</a>
+      </div>
+    </div>
+
+  </div>
+</footer>

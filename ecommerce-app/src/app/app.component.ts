@@ -5,10 +5,11 @@ import { AsideComponent } from "./layout/aside/aside.component";
 import { ToastComponent } from "./components/shared/toast/toast.component";
 import { Store } from '@ngrx/store';
 import * as AuthActions from './core/store/auth/auth.actions'
+import { FooterComponent } from "./components/footer/footer.component";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SearchProductsComponent, AsideComponent, ToastComponent],
+  imports: [RouterOutlet, SearchProductsComponent, AsideComponent, ToastComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

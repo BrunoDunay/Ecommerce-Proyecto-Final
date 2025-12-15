@@ -29,7 +29,11 @@ export class ProductsService {
     return this.httpClient.get<Product>(`${this.baseUrl}/${id}`);
   }
 
-  getProductsByCategory(categoryId: string, page: number = 1, limit: number = 1) {
+  getProductsByCategory(
+    categoryId: string,
+    page: number = 1,
+    limit: number = 1
+  ) {
     return this.httpClient.get<ProductResponse>(
       `${this.baseUrl}/category/${categoryId}`,
       { params: { page, limit } }
@@ -41,11 +45,15 @@ export class ProductsService {
   }
 
   deleteProduct(id: string) {
-  return this.httpClient.delete(`${this.baseUrl}/${id}`);
+    return this.httpClient.delete(`${this.baseUrl}/${id}`);
   }
 
-  getCategories() {
-    return this.httpClient.get<any[]>(this.categoriesUrl);
+  getCategories(): Observable<any[]> {
+    return this.httpClient
+      .get<any>(this.categoriesUrl)
+      .pipe(
+        map((data) => (Array.isArray(data) ? data : data.categories ?? []))
+      );
   }
 
   createCategory(data: { name: string; description: string }) {
