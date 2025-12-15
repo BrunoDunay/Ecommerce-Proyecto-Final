@@ -7,7 +7,7 @@ import { User } from '../../../core/types/User';
   selector: 'app-admin-users',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './users.component.html'
+  templateUrl: './users.component.html',
 })
 export class AdminUsersComponent implements OnInit {
   users: User[] = [];
@@ -35,7 +35,7 @@ export class AdminUsersComponent implements OnInit {
         console.error('Error cargando usuarios', err);
         this.errorMsg = 'No se pudieron cargar los usuarios';
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -49,14 +49,26 @@ export class AdminUsersComponent implements OnInit {
     this.userService.toggleUserStatus(u._id).subscribe({
       next: (updated) => {
         // Actualiza en UI sin recargar todo
-        this.users = this.users.map(x => x._id === u._id ? updated : x);
+        this.users = this.users.map((x) => (x._id === u._id ? updated : x));
         this.actionLoadingId = null;
       },
       error: (err) => {
         console.error(err);
         this.actionLoadingId = null;
-      }
+      },
     });
+  }
+
+  defaultAvatar = 'https://placehold.co/100x100.png?text=User';
+
+  getAvatar(u: User): string {
+    const avatar = (u.avatar ?? '').trim();
+    return avatar.length ? avatar : this.defaultAvatar;
+  }
+
+  onAvatarError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = this.defaultAvatar;
   }
 
   softDelete(u: User): void {
@@ -69,7 +81,7 @@ export class AdminUsersComponent implements OnInit {
 
     this.userService.softDeleteUser(u._id).subscribe({
       next: () => {
-        this.users = this.users.map(x =>
+        this.users = this.users.map((x) =>
           x._id === u._id ? { ...x, isActive: false } : x
         );
         this.actionLoadingId = null;
@@ -77,7 +89,7 @@ export class AdminUsersComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.actionLoadingId = null;
-      }
+      },
     });
   }
 }
