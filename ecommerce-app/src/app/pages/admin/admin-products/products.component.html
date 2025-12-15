@@ -13,7 +13,7 @@
   <ul *ngIf="!loading && products.length > 0" class="space-y-4">
     <li
       *ngFor="let p of products"
-      class="p-4 bg-gray-50 border rounded-lg flex gap-4 items-start hover:bg-gray-100 hover:border-gray-300 transition-colors cursor-pointer"
+      class="p-4 bg-gray-50 rounded-lg flex gap-4 items-start hover:bg-gray-100 transition-colors cursor-pointer"
       [routerLink]="['/product-edit', p._id]"
     >
       <img

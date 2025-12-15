@@ -25,6 +25,7 @@ export class UserService {
       })
     );
   }
+
   getUsers(): Observable<User[]> {
     return this.httpClient.get<any>(this.baseUrl).pipe(
       map((data: any) => {
@@ -39,6 +40,7 @@ export class UserService {
       })
     );
   }
+
   toggleUserStatus(userId: string): Observable<User> {
     return this.httpClient
       .patch<any>(`${this.baseUrl}/${userId}/toggle-status`, {})
@@ -51,21 +53,38 @@ export class UserService {
       );
   }
 
+  updateUser(
+    userId: string,
+    payload: Partial<
+      Pick<User, 'displayName' | 'email' | 'phone' | 'avatar' | 'role' | 'isActive'>
+    >
+  ): Observable<User> {
+    return this.httpClient.put<any>(`${this.baseUrl}/${userId}`, payload).pipe(
+      map((data: any) => {
+        const response = userSchema.safeParse(data.user);
+        if (!response.success) {
+          console.log(response.error);
+          throw new Error(`${response.error}`);
+        }
+        return response.data;
+      })
+    );
+  }
+
   softDeleteUser(userId: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.baseUrl}/${userId}`);
   }
 
   getMyProfile(): Observable<User> {
-  return this.httpClient.get<any>(`${this.baseUrl}/profile`).pipe(
-    map((data: any) => {
-      const response = userSchema.safeParse(data.user);
-      if (!response.success) {
-        console.log(response.error);
-        throw new Error(`${response.error}`);
-      }
-      return response.data;
-    })
-  );
-}
-
+    return this.httpClient.get<any>(`${this.baseUrl}/profile`).pipe(
+      map((data: any) => {
+        const response = userSchema.safeParse(data.user);
+        if (!response.success) {
+          console.log(response.error);
+          throw new Error(`${response.error}`);
+        }
+        return response.data;
+      })
+    );
+  }
 }
