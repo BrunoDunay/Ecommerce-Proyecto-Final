@@ -13,7 +13,6 @@ dotenv.config();
 setupGlobalErrorHandlers();
 
 const app = express();
-dbConnection();
 console.log("CORS ORIGIN:", process.env.FRONT_APP_URL);
 app.use(
   cors({
@@ -41,13 +40,19 @@ app.use((req, res) => {
   });
 });
 
-if (process.env.INITIAL_DATA === "development") {
-  console.log("Development environment, creating mocking data...");
-  initializeData();
-}
-
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT}`);
-});
+const startServer = async () => {
+  await dbConnection();
+
+  if (process.env.INITIAL_DATA === "development") {
+    console.log("Development environment, creating mocking data...");
+    await initializeData();
+  }
+
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running on http://localhost:${process.env.PORT}`);
+  });
+};
+
+startServer();
