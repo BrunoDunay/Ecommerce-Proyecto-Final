@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ShippingAddress } from '../../../core/types/ShippingAddress';
 
 
@@ -7,6 +7,7 @@ import { ShippingAddress } from '../../../core/types/ShippingAddress';
   standalone: true,
   imports: [],
   templateUrl: './shipping-address-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './shipping-address-card.component.css',
 })
 export class ShippingAddressCardComponent {

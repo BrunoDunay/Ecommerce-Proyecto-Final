@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormFieldComponent } from '../../shared/form-field/form-field.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormErrorService } from '../../../core/services/validation/form-error.service';
@@ -14,6 +14,7 @@ import { login } from '../../../core/store/auth/auth.actions';
   standalone: true,
   imports: [FormFieldComponent, ReactiveFormsModule, RouterLink],
   templateUrl: './login-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent implements canComponentDeactivate{

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ProductsListComponent } from "../../components/products/products-list/products-list.component";
 
 @Component({
@@ -6,6 +6,7 @@ import { ProductsListComponent } from "../../components/products/products-list/p
   standalone: true,
   imports: [ProductsListComponent],
   templateUrl: './products.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './products.component.css'
 })
 export class ProductsComponent {

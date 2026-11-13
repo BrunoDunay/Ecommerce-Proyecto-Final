@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { PaymentMethodsListComponent } from "../../../components/payment/payment-methods-list/payment-methods-list.component";
 import { PaymentFormComponent } from "../../../components/payment/payment-form/payment-form.component";
 import { PaymentService } from '../../../core/services/paymentMethods/payment-methods.service';
@@ -11,6 +11,7 @@ import { AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [PaymentMethodsListComponent, PaymentFormComponent, AsyncPipe],
   templateUrl: './paymethods.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './paymethods.component.css'
 })
 export class PaymethodsComponent implements OnInit {

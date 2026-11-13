@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ProductResponse } from '../../../core/types/Products';
 import { ProductsCardComponent } from "../products-card/products-card.component";
 import { ProductsService } from '../../../core/services/products/products.service';
@@ -10,6 +10,7 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
   standalone: true,
   imports: [ProductsCardComponent, PlaceholderComponent, MatPaginatorModule],
   templateUrl: './products-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './products-list.component.css'
 })
 export class ProductsListComponent implements OnInit{

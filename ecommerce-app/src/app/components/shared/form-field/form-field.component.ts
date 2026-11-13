@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ErrorMessageComponent } from "../error-message/error-message.component";
 
@@ -14,6 +14,7 @@ import { ErrorMessageComponent } from "../error-message/error-message.component"
   ],
   standalone: true,
   templateUrl: './form-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './form-field.component.css',
 })
 export class FormFieldComponent implements ControlValueAccessor {

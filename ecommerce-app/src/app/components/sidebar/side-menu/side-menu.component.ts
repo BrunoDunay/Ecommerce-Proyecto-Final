@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MenuItemComponent, routeItem } from '../menu-item/menu-item.component';
 
 
@@ -7,6 +7,7 @@ import { MenuItemComponent, routeItem } from '../menu-item/menu-item.component';
   standalone: true,
   imports: [MenuItemComponent],
   templateUrl: './side-menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './side-menu.component.css'
 })
 export class SideMenuComponent {

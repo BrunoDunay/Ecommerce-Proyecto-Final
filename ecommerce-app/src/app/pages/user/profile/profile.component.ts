@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../core/types/User';
 
@@ -8,6 +8,7 @@ import { User } from '../../../core/types/User';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './profile.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {

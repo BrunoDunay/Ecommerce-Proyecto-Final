@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../core/services/products/products.service';
@@ -9,6 +9,7 @@ import { Product } from '../../core/types/Products';
   standalone: true,
   imports: [CommonModule, RouterLink, CurrencyPipe],
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit, AfterViewInit {

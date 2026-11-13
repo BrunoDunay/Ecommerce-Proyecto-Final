@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProductsService } from '../../../core/services/products/products.service';
 import {
@@ -28,6 +28,7 @@ import { Product } from '../../../core/types/Products';
     RouterLinkActive
   ],
   templateUrl: './search-products.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search-products.component.css'
 })
 export class SearchProductsComponent implements OnInit {

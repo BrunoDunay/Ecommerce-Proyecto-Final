@@ -6,6 +6,7 @@ import {
   Output,
   SimpleChanges,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormBuilder,
@@ -22,6 +23,7 @@ import { FormErrorService } from '../../../core/services/validation/form-error.s
   standalone: true,
   imports: [ReactiveFormsModule, FormFieldComponent],
   templateUrl: './shipping-address-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './shipping-address-form.component.css',
 })
 export class ShippingAddressFormComponent implements OnChanges {

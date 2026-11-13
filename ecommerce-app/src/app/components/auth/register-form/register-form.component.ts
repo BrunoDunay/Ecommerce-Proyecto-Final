@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -21,6 +21,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule, FormFieldComponent, RouterLink],
   templateUrl: './register-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './register-form.component.css',
 })
 export class RegisterFormComponent {

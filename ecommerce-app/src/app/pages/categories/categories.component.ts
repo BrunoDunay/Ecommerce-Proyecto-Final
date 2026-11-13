@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 import { ProductsService } from '../../core/services/products/products.service';
@@ -12,6 +12,7 @@ import { PlaceholderComponent } from '../../components/shared/placeholder/placeh
   selector: 'app-categories-page',
   standalone: true,
   imports: [CommonModule, ProductsCardComponent, PlaceholderComponent, MatPaginatorModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './categories.component.html',
 })
 export class CategoriesPageComponent implements OnInit {

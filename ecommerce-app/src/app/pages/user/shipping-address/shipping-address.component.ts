@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { ShippingAddress } from '../../../core/types/ShippingAddress';
 import { ShippingAddressService } from '../../../core/services/shippingAddress/shipping-address.service';
@@ -11,6 +11,7 @@ import { ShippingAddressFormComponent } from '../../../components/shipping/shipp
   standalone: true,
   imports: [AsyncPipe, ShippingAddressListComponent, ShippingAddressFormComponent],
   templateUrl: './shipping-address.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './shipping-address.component.css',
 })
 export class ShippingAddressComponent implements OnInit {

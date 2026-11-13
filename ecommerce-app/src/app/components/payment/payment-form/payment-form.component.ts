@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { PaymentMethod } from '../../../core/types/PaymentMethod';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormFieldComponent } from "../../shared/form-field/form-field.component";
@@ -9,6 +9,7 @@ import { FormErrorService } from '../../../core/services/validation/form-error.s
   standalone: true,
   imports: [ReactiveFormsModule, FormFieldComponent],
   templateUrl: './payment-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './payment-form.component.css'
 })
 export class PaymentFormComponent implements OnChanges {

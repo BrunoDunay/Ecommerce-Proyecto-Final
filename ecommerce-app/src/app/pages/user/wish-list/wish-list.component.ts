@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { take } from 'rxjs';
@@ -13,6 +13,7 @@ import { getFinalPrice } from '../../../core/utils/pricing';
   standalone: true,
   imports: [CommonModule, RouterLink, CurrencyPipe],
   templateUrl: './wish-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './wish-list.component.css',
 })
 export class WishlistComponent implements OnInit {

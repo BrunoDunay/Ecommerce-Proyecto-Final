@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { SideMenuComponent } from '../../components/sidebar/side-menu/side-menu.component';
 import { routeItem } from '../../components/sidebar/menu-item/menu-item.component';
@@ -15,6 +15,7 @@ import { decodedToken } from '../../core/types/Token';
   standalone: true,
   imports: [CommonModule, SideMenuComponent, AdminDirective],
   templateUrl: './aside.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './aside.component.css',
 })
 export class AsideComponent implements OnInit {

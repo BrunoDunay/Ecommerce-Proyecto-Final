@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SearchProductsComponent } from "./components/products/search-products/search-products.component";
 import { AsideComponent } from "./layout/aside/aside.component";
@@ -11,6 +11,7 @@ import { FooterComponent } from "./components/footer/footer.component";
   standalone: true,
   imports: [RouterOutlet, SearchProductsComponent, AsideComponent, ToastComponent, FooterComponent],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{

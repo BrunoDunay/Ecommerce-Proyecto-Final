@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { PaymentMethod } from '../../../core/types/PaymentMethod';
 
 @Component({
@@ -6,6 +6,7 @@ import { PaymentMethod } from '../../../core/types/PaymentMethod';
   imports: [],
   standalone:true,
   templateUrl: './payment-methods-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './payment-methods-card.component.css'
 })
 export class PaymentMethodsCardComponent {

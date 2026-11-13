@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { OrderService } from '../../../core/services/order/order.service';
   standalone: true,
   imports: [AsyncPipe, CurrencyPipe, NgClass, RouterLink],
   templateUrl: './orders.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './orders.component.css',
 })
 export class OrdersComponent implements OnInit {

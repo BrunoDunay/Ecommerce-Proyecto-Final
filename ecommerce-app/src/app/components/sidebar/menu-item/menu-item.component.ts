@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './menu-item.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './menu-item.component.css',
 })
 export class MenuItemComponent {

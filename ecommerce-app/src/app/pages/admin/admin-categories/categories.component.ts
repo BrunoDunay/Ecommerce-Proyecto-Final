@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductsService } from '../../../core/services/products/products.service';
@@ -7,6 +7,7 @@ import { ProductsService } from '../../../core/services/products/products.servic
   selector: 'app-admin-categories',
   standalone: true,
   imports: [ReactiveFormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './categories.component.html'
 })
 export class AdminCategoriesComponent implements OnInit {

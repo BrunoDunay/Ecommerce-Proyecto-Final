@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Product } from '../../core/types/Products';
 import { ProductsService } from '../../core/services/products/products.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -16,6 +16,7 @@ import { getFinalPrice } from '../../core/utils/pricing';
   standalone: true,
   imports: [CommonModule, CurrencyPipe, RouterLink, NgClass],
   templateUrl: './product-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './product-detail.component.css',
 })
 export class ProductDetailComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, of, take } from 'rxjs';
 import { CartService } from '../../../core/services/cart/cart.service';
 import { Cart } from '../../../core/types/Cart';
@@ -11,6 +11,7 @@ import { getFinalPrice } from '../../../core/utils/pricing';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './cart.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cart.component.css',
 })
 export class CartComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RegisterFormComponent } from "../../components/auth/register-form/register-form.component";
 
 @Component({
@@ -6,6 +6,7 @@ import { RegisterFormComponent } from "../../components/auth/register-form/regis
   standalone: true,
   imports: [RegisterFormComponent],
   templateUrl: './register.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {

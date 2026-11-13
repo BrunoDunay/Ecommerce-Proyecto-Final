@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ToastService } from '../../../core/services/toast/toast.service';
 import { Observable, of, scan, Subscription, takeUntil } from 'rxjs';
 import { ToastMessage } from '../../../core/types/ToastMessage';
@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   // imports: [CommonModule],
   standalone: true,
   templateUrl: './toast.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './toast.component.css',
 })
 export class ToastComponent implements OnInit {

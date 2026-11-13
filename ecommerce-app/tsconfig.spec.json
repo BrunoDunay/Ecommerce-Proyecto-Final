@@ -5,5 +5,17 @@
     "types": ["jasmine", "node"]
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"],
-  "exclude": ["cypress/**", "**/*.cy.ts", "cypress.config.ts"]
+  "exclude": [
+    "cypress/**",
+    "**/*.cy.ts",
+    "cypress.config.ts"
+  ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

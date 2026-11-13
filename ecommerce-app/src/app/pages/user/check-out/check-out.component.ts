@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { of, Observable, take } from 'rxjs';
@@ -31,6 +31,7 @@ import { getFinalPrice } from '../../../core/utils/pricing';
     RouterLink,
   ],
   templateUrl: './check-out.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './check-out.component.css',
 })
 export class CheckOutComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { RouterLink } from '@angular/router';
@@ -8,6 +8,7 @@ import { Product } from '../../../core/types/Products';
   selector: 'app-admin-products',
   standalone: true,
   imports: [CommonModule, RouterLink, CurrencyPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './products.component.html'
 })
 export class AdminProductsComponent implements OnInit {

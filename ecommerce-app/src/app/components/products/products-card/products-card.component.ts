@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Product } from '../../../core/types/Products';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,6 +13,7 @@ import { getFinalPrice } from '../../../core/utils/pricing';
   standalone: true,
   imports: [RouterLink, CommonModule, AdminDirective, OfferDirective],
   templateUrl: './products-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './products-card.component.css',
 })
 export class ProductsCardComponent {
