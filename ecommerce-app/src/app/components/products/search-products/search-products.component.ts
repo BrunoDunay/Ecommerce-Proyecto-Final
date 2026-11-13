@@ -9,10 +9,7 @@ import {
   Observable,
   of
 } from 'rxjs';
-import {
-  AsyncPipe,
-  CommonModule
-} from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { Store } from '@ngrx/store';

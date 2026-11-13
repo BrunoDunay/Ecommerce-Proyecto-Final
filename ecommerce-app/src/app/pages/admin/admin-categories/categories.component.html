@@ -15,7 +15,7 @@
       [formGroup]="newCategoryForm"
       (ngSubmit)="addCategory()"
       class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end"
-    >
+      >
       <div class="space-y-1">
         <label class="block text-sm font-medium text-slate-700">
           Nombre
@@ -25,67 +25,73 @@
           formControlName="name"
           class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
           placeholder="Accesorios"
-        />
-      </div>
-
-      <div class="space-y-1 md:col-span-1">
-        <label class="block text-sm font-medium text-slate-700">
-          Descripción
-        </label>
-        <input
-          type="text"
-          formControlName="description"
-          class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          placeholder="Categoría para accesorios y periféricos"
-        />
-      </div>
-
-      <div class="md:col-span-2 flex justify-end">
-        <button
-          type="submit"
-          [disabled]="newCategoryForm.invalid || creating"
-          class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
-        >
-          {{ creating ? 'Guardando...' : 'Agregar categoría' }}
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Lista de categorías -->
-  <div>
-    <div *ngIf="loading" class="text-gray-500 text-sm">
-      Cargando categorías...
-    </div>
-
-    <div *ngIf="!loading && categories.length === 0" class="text-gray-500 text-sm">
-      No hay categorías registradas.
-    </div>
-
-    <ul *ngIf="!loading && categories.length > 0" class="space-y-4">
-      <li
-        *ngFor="let c of categories"
-        class="p-4 bg-gray-50 border rounded-lg flex justify-between items-start gap-3"
-      >
-        <div>
-          <h2 class="font-semibold text-lg text-slate-800">
-            {{ c.name }}
-          </h2>
-          <p class="text-sm text-gray-600">
-            {{ c.description }}
-          </p>
+          />
         </div>
 
-        <button
-          type="button"
-          (click)="deleteCategory(c._id)"
-          [disabled]="deletingId === c._id"
-          class="px-3 py-1.5 bg-red-600 text-white text-sm rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50"
-        >
-          {{ deletingId === c._id ? 'Eliminando...' : 'Eliminar' }}
-        </button>
-      </li>
-    </ul>
-  </div>
+        <div class="space-y-1 md:col-span-1">
+          <label class="block text-sm font-medium text-slate-700">
+            Descripción
+          </label>
+          <input
+            type="text"
+            formControlName="description"
+            class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            placeholder="Categoría para accesorios y periféricos"
+            />
+          </div>
 
-</div>
+          <div class="md:col-span-2 flex justify-end">
+            <button
+              type="submit"
+              [disabled]="newCategoryForm.invalid || creating"
+              class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
+              >
+              {{ creating ? 'Guardando...' : 'Agregar categoría' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Lista de categorías -->
+      <div>
+        @if (loading) {
+          <div class="text-gray-500 text-sm">
+            Cargando categorías...
+          </div>
+        }
+
+        @if (!loading && categories.length === 0) {
+          <div class="text-gray-500 text-sm">
+            No hay categorías registradas.
+          </div>
+        }
+
+        @if (!loading && categories.length > 0) {
+          <ul class="space-y-4">
+            @for (c of categories; track c) {
+              <li
+                class="p-4 bg-gray-50 border rounded-lg flex justify-between items-start gap-3"
+                >
+                <div>
+                  <h2 class="font-semibold text-lg text-slate-800">
+                    {{ c.name }}
+                  </h2>
+                  <p class="text-sm text-gray-600">
+                    {{ c.description }}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  (click)="deleteCategory(c._id)"
+                  [disabled]="deletingId === c._id"
+                  class="px-3 py-1.5 bg-red-600 text-white text-sm rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50"
+                  >
+                  {{ deletingId === c._id ? 'Eliminando...' : 'Eliminar' }}
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+    </div>

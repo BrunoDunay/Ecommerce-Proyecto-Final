@@ -5,7 +5,7 @@
         <a routerLink="/" class="flex items-center gap-2">
           <div
             class="w-9 h-9 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm"
-          >
+            >
             F
           </div>
           <span class="font-bold text-slate-800 hidden sm:inline">
@@ -16,12 +16,12 @@
 
       <div
         class="hidden md:flex flex-1 justify-center gap-6 text-sm sm:text-base"
-      >
+        >
         <a
           routerLink="/"
           routerLinkActive="text-orange-600 font-semibold"
           class="text-slate-700 hover:text-orange-500 transition-colors"
-        >
+          >
           Inicio
         </a>
 
@@ -29,7 +29,7 @@
           routerLink="/products"
           routerLinkActive="text-orange-600 font-semibold"
           class="text-slate-700 hover:text-orange-500 transition-colors"
-        >
+          >
           Productos
         </a>
 
@@ -37,18 +37,19 @@
           routerLink="/categories"
           routerLinkActive="text-orange-600 font-semibold"
           class="text-slate-700 hover:text-orange-500 transition-colors"
-        >
+          >
           Categorías
         </a>
 
-        <a
-          *ngIf="user$ | async as user"
-          routerLink="/user/profile"
-          routerLinkActive="text-orange-600 font-semibold"
-          class="text-slate-700 hover:text-orange-500 transition-colors"
-        >
-          Mi perfil
-        </a>
+        @if (user$ | async; as user) {
+          <a
+            routerLink="/user/profile"
+            routerLinkActive="text-orange-600 font-semibold"
+            class="text-slate-700 hover:text-orange-500 transition-colors"
+            >
+            Mi perfil
+          </a>
+        }
       </div>
 
       <div class="hidden md:block flex-[1.4] min-w-[220px]">
@@ -59,70 +60,70 @@
               formControlName="q"
               placeholder="Buscar productos..."
               class="w-full pl-3 pr-9 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-sm"
-            />
+              />
 
-            <button
-              type="button"
-              class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.8"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m21 21-4.35-4.35M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"
-                />
-              </svg>
-            </button>
+              <button
+                type="button"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.8"
+                  stroke="currentColor"
+                  >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m21 21-4.35-4.35M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </div>
-  </nav>
+        </div>
+      </nav>
 
-  @if (searchProductForm.get('q')?.value &&
-  searchProductForm.get('q')?.value!.length > 0) {
+      @if (searchProductForm.get('q')?.value &&
+        searchProductForm.get('q')?.value!.length > 0) {
 
-  <div
-    class="absolute top-full left-0 right-0 z-40 bg-white shadow-xl border-t max-w-6xl mx-auto"
-  >
-    <div class="p-4">
-      @if (products$ | async; as products ) {
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto"
-      >
-        @for (product of products; track $index) {
         <div
-          class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
-          [routerLink]="['/product-view', product._id]"
-        >
-          <img
-            [src]="product.imageUrl"
-            [alt]="product.name"
-            class="w-12 h-12 rounded object-cover bg-gray-100 flex-shrink-0"
-          />
-          <div class="flex-1 min-w-0">
-            <h4 class="text-sm text-gray-700 truncate">{{ product.name }}</h4>
-            <p class="text-xs text-gray-500">
-              {{ product.price | currency : "MXN" : "symbol-narrow" }}
-            </p>
+          class="absolute top-full left-0 right-0 z-40 bg-white shadow-xl border-t max-w-6xl mx-auto"
+          >
+          <div class="p-4">
+            @if (products$ | async; as products ) {
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto"
+                >
+                @for (product of products; track $index) {
+                  <div
+                    class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                    [routerLink]="['/product-view', product._id]"
+                    >
+                    <img
+                      [src]="product.imageUrl"
+                      [alt]="product.name"
+                      class="w-12 h-12 rounded object-cover bg-gray-100 flex-shrink-0"
+                      />
+                      <div class="flex-1 min-w-0">
+                        <h4 class="text-sm text-gray-700 truncate">{{ product.name }}</h4>
+                        <p class="text-xs text-gray-500">
+                          {{ product.price | currency : "MXN" : "symbol-narrow" }}
+                        </p>
+                      </div>
+                    </div>
+                    } @empty {
+                    <div class="text-center py-4 text-gray-500">
+                      No se encontraron productos
+                    </div>
+                  }
+                </div>
+              }
+            </div>
           </div>
-        </div>
-        } @empty {
-        <div class="text-center py-4 text-gray-500">
-          No se encontraron productos
-        </div>
+
         }
       </div>
-      }
-    </div>
-  </div>
-
-  }
-</div>

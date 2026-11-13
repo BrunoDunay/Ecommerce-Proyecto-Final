@@ -8,99 +8,119 @@
   </div>
 
   <!-- Carrusel 3D (solo desktop) -->
-  <div class="wrapper-desktop" *ngIf="!loading && products.length > 0">
-    <div class="inner" [style.--quantity]="products.length">
-      <a
-        class="card"
-        *ngFor="let product of products; index as i"
-        [style.--index]="i"
-        [routerLink]="['/product-view', product._id]"
-      >
-        <div
-          class="img"
+  @if (!loading && products.length > 0) {
+    <div class="wrapper-desktop">
+      <div class="inner" [style.--quantity]="products.length">
+        @for (product of products; track product; let i = $index) {
+          <a
+            class="card"
+            [style.--index]="i"
+            [routerLink]="['/product-view', product._id]"
+            >
+            <div
+              class="img"
           [ngStyle]="{
             'background-image': 'url(' + product.imageUrl + ')'
           }"
-        >
-          <div class="card-overlay">
-            <h3 class="card-title">
-              {{ product.name }}
-            </h3>
-            <p class="card-price">
-              {{ product.price | currency : "MXN" : "symbol-narrow" }}
-            </p>
-            <p class="card-offer" *ngIf="product.offer > 0">
-              -{{ product.offer }}% de descuento
-            </p>
-          </div>
-        </div>
-      </a>
+              >
+              <div class="card-overlay">
+                <h3 class="card-title">
+                  {{ product.name }}
+                </h3>
+                <p class="card-price">
+                  {{ product.price | currency : "MXN" : "symbol-narrow" }}
+                </p>
+                @if (product.offer > 0) {
+                  <p class="card-offer">
+                    -{{ product.offer }}% de descuento
+                  </p>
+                }
+              </div>
+            </div>
+          </a>
+        }
+      </div>
     </div>
-  </div>
+  }
 
   <!-- Carrusel horizontal (solo móvil) -->
-  <div class="wrapper-mobile" *ngIf="products.length > 0 && !loading">
-    <div class="mobile-track" #mobileTrack>
-      <a
-        class="mobile-card"
-        *ngFor="let product of products; index as i"
-        [routerLink]="['/product-view', product._id]"
-      >
-        <div
-          class="mobile-img"
+  @if (products.length > 0 && !loading) {
+    <div class="wrapper-mobile">
+      <div class="mobile-track" #mobileTrack>
+        @for (product of products; track product; let i = $index) {
+          <a
+            class="mobile-card"
+            [routerLink]="['/product-view', product._id]"
+            >
+            <div
+              class="mobile-img"
           [ngStyle]="{
             'background-image': 'url(' + product.imageUrl + ')'
           }"
-        ></div>
-
-        <div class="mobile-info">
-          <h3 class="mobile-title">{{ product.name }}</h3>
-          <p class="mobile-price">
-            {{ product.price | currency : "MXN" : "symbol-narrow" }}
-          </p>
-          <p class="mobile-offer" *ngIf="product.offer > 0">
-            -{{ product.offer }}%
-          </p>
-        </div>
-      </a>
+            ></div>
+            <div class="mobile-info">
+              <h3 class="mobile-title">{{ product.name }}</h3>
+              <p class="mobile-price">
+                {{ product.price | currency : "MXN" : "symbol-narrow" }}
+              </p>
+              @if (product.offer > 0) {
+                <p class="mobile-offer">
+                  -{{ product.offer }}%
+                </p>
+              }
+            </div>
+          </a>
+        }
+      </div>
     </div>
-  </div>
+  }
 
-  <div *ngIf="loading" class="loading-text">
-    Cargando productos destacados...
-  </div>
+  @if (loading) {
+    <div class="loading-text">
+      Cargando productos destacados...
+    </div>
+  }
 
-  <div *ngIf="!loading && products.length === 0" class="loading-text">
-    No hay productos disponibles por ahora.
-  </div>
+  @if (!loading && products.length === 0) {
+    <div class="loading-text">
+      No hay productos disponibles por ahora.
+    </div>
+  }
 </div>
 
 <!-- PLACEHOLDER DESKTOP -->
-<div class="wrapper-desktop loading-skeleton" *ngIf="loading">
-  <div class="inner" style="--quantity: 6">
-    <div class="card" *ngFor="let i of [0, 1, 2, 3, 4, 5]" [style.--index]="i">
-      <div class="img skeleton">
-        <div class="card-overlay">
-          <div class="skeleton-text title"></div>
-          <div class="skeleton-text price"></div>
-          <div class="skeleton-text offer"></div>
+@if (loading) {
+  <div class="wrapper-desktop loading-skeleton">
+    <div class="inner" style="--quantity: 6">
+      @for (i of [0, 1, 2, 3, 4, 5]; track i) {
+        <div class="card" [style.--index]="i">
+          <div class="img skeleton">
+            <div class="card-overlay">
+              <div class="skeleton-text title"></div>
+              <div class="skeleton-text price"></div>
+              <div class="skeleton-text offer"></div>
+            </div>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
-</div>
+}
 
 <!-- PLACEHOLDER MOBILE -->
-<div class="wrapper-mobile" *ngIf="loading">
-  <div class="mobile-track">
-    <div class="mobile-card" *ngFor="let i of [0, 1, 2, 3, 4]">
-      <div class="mobile-img skeleton"></div>
-
-      <div class="mobile-info">
-        <div class="skeleton-text title"></div>
-        <div class="skeleton-text price"></div>
-        <div class="skeleton-text offer"></div>
-      </div>
+@if (loading) {
+  <div class="wrapper-mobile">
+    <div class="mobile-track">
+      @for (i of [0, 1, 2, 3, 4]; track i) {
+        <div class="mobile-card">
+          <div class="mobile-img skeleton"></div>
+          <div class="mobile-info">
+            <div class="skeleton-text title"></div>
+            <div class="skeleton-text price"></div>
+            <div class="skeleton-text offer"></div>
+          </div>
+        </div>
+      }
     </div>
   </div>
-</div>
+}

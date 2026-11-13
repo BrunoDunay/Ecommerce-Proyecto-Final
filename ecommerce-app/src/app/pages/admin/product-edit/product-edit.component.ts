@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { CommonModule } from '@angular/common';
+
 import { Product } from '../../../core/types/Products';
 
 @Component({
   selector: 'app-product-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './product-edit.component.html'
 })
 export class ProductEditComponent implements OnInit {

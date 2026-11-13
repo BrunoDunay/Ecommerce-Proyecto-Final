@@ -319,7 +319,7 @@ async function generatePaymentMethods(users) {
   const methods = users.map((user) => ({
     user: user._id,
     type: user.role === "admin" ? "credit_card" : "paypal",
-    cardNumber: user.role === "admin" ? "4111111111111111" : undefined,
+    cardNumber: user.role === "admin" ? "**** **** **** 1111" : undefined,
     cardHolderName: user.role === "admin" ? user.displayName : undefined,
     expiryDate: user.role === "admin" ? "12/28" : undefined,
     paypalEmail: user.role !== "admin" ? `${user.email}` : undefined,

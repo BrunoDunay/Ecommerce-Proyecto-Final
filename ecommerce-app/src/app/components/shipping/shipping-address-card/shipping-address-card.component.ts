@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ShippingAddress } from '../../../core/types/ShippingAddress';
-import { CommonModule, NgIf } from '@angular/common';
+
 
 @Component({
   selector: 'app-shipping-address-card',
   standalone: true,
-  imports: [NgIf, CommonModule],
+  imports: [],
   templateUrl: './shipping-address-card.component.html',
   styleUrl: './shipping-address-card.component.css',
 })
