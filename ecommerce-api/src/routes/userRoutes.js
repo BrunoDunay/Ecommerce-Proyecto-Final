@@ -59,6 +59,9 @@ router.get(
       .isInt({ min: 1 })
       .withMessage("el limite debe ser un entero positivo"),
   ],
+  validate,
+  authMiddleware,
+  isAdmin,
   searchUsers
 );
 

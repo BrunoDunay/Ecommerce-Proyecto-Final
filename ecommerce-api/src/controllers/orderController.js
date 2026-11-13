@@ -1,10 +1,11 @@
 import Order from '../models/order.js';
+import Product from '../models/product.js';
 import errorHandler from '../middlewares/errorHandler.js';
 
-async function getOrders(req, res) {
+async function getOrders(req, res, next) {
   try {
     const orders = await Order.find()
-      .populate('user')
+      .populate('user', '-hashPassword')
       .populate('products.productId')
       .populate('shippingAddress')
       .populate('paymentMethod')
@@ -15,11 +16,11 @@ async function getOrders(req, res) {
   }
 }
 
-async function getOrderById(req, res) {
+async function getOrderById(req, res, next) {
   try {
     const id = req.params.id;
     const order = await Order.findById(id)
-      .populate('user')
+      .populate('user', '-hashPassword')
       .populate('products.productId')
       .populate('shippingAddress')
       .populate('paymentMethod');
@@ -32,11 +33,11 @@ async function getOrderById(req, res) {
   }
 }
 
-async function getOrdersByUser(req, res) {
+async function getOrdersByUser(req, res, next) {
   try {
     const userId = req.params.userId;
     const orders = await Order.find({ user: userId })
-      .populate('user')
+      .populate('user', '-hashPassword')
       .populate('products.productId')
       .populate('shippingAddress')
       .populate('paymentMethod')
@@ -51,7 +52,7 @@ async function getOrdersByUser(req, res) {
   }
 }
 
-async function createOrder(req, res) {
+async function createOrder(req, res, next) {
   try {
     const {
       user,
@@ -69,31 +70,45 @@ async function createOrder(req, res) {
       return res.status(400).json({ error: 'Shipping address and payment method are required' });
     }
 
-    // Validar estructura de productos
+    // Validar estructura de productos. El precio NO se toma del cliente:
+    // se calcula con el precio y la oferta guardados en la base de datos.
+    const pricedProducts = [];
     for (const item of products) {
-      if (!item.productId || !item.quantity || !item.price || item.quantity < 1) {
+      if (!item || !item.productId || !Number.isInteger(item.quantity) || item.quantity < 1) {
         return res.status(400).json({
-          error: 'Each product must have productId, quantity >= 1, and price'
+          error: 'Each product must have productId and an integer quantity >= 1'
         });
       }
+      const product = await Product.findById(item.productId).select('price offer stock');
+      if (!product) {
+        return res.status(404).json({ error: `Product not found: ${item.productId}` });
+      }
+      if (product.stock < item.quantity) {
+        return res.status(400).json({ error: `Not enough stock for product ${item.productId}` });
+      }
+      const offer = product.offer > 0 ? product.offer : 0;
+      const price = Math.round(product.price * (1 - offer / 100) * 100) / 100;
+      pricedProducts.push({ productId: product._id, quantity: item.quantity, price });
     }
 
+    const safeShippingCost = Math.max(0, Number(shippingCost) || 0);
+
     // Calcular precio total
-    const subtotal = products.reduce((total, item) => total + (item.price * item.quantity), 0);
-    const totalPrice = subtotal + shippingCost;
+    const subtotal = pricedProducts.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const totalPrice = Math.round((subtotal + safeShippingCost) * 100) / 100;
 
     const newOrder = await Order.create({
       user,
-      products,
+      products: pricedProducts,
       shippingAddress,
       paymentMethod,
-      shippingCost,
+      shippingCost: safeShippingCost,
       totalPrice,
       status: 'pending',
       paymentStatus: 'pending'
     });
 
-    await newOrder.populate('user');
+    await newOrder.populate('user', '-hashPassword');
     await newOrder.populate('products.productId');
     await newOrder.populate('shippingAddress');
     await newOrder.populate('paymentMethod');
@@ -104,7 +119,7 @@ async function createOrder(req, res) {
   }
 }
 
-async function updateOrder(req, res) {
+async function updateOrder(req, res, next) {
   try {
     const { id } = req.params;
     const updateData = req.body;
@@ -133,7 +148,7 @@ async function updateOrder(req, res) {
       filteredUpdate,
       { new: true }
     )
-      .populate('user')
+      .populate('user', '-hashPassword')
       .populate('products.productId')
       .populate('shippingAddress')
       .populate('paymentMethod');
@@ -148,7 +163,7 @@ async function updateOrder(req, res) {
   }
 }
 
-async function cancelOrder(req, res) {
+async function cancelOrder(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -172,7 +187,7 @@ async function cancelOrder(req, res) {
       },
       { new: true }
     )
-      .populate('user')
+      .populate('user', '-hashPassword')
       .populate('products.productId')
       .populate('shippingAddress')
       .populate('paymentMethod');
@@ -183,7 +198,7 @@ async function cancelOrder(req, res) {
   }
 }
 
-async function updateOrderStatus(req, res) {
+async function updateOrderStatus(req, res, next) {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -200,7 +215,7 @@ async function updateOrderStatus(req, res) {
       { status },
       { new: true }
     )
-      .populate('user')
+      .populate('user', '-hashPassword')
       .populate('products.productId')
       .populate('shippingAddress')
       .populate('paymentMethod');
@@ -215,7 +230,7 @@ async function updateOrderStatus(req, res) {
   }
 }
 
-async function updatePaymentStatus(req, res) {
+async function updatePaymentStatus(req, res, next) {
   try {
     const { id } = req.params;
     const { paymentStatus } = req.body;
@@ -232,7 +247,7 @@ async function updatePaymentStatus(req, res) {
       { paymentStatus },
       { new: true }
     )
-      .populate('user')
+      .populate('user', '-hashPassword')
       .populate('products.productId')
       .populate('shippingAddress')
       .populate('paymentMethod');
@@ -247,7 +262,7 @@ async function updatePaymentStatus(req, res) {
   }
 }
 
-async function deleteOrder(req, res) {
+async function deleteOrder(req, res, next) {
   try {
     const { id } = req.params;
 

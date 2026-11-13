@@ -1,19 +1,19 @@
 import Notification from '../models/notification.js';
 import errorHandler from '../middlewares/errorHandler.js';
 
-async function getNotifications(req, res) {
+async function getNotifications(req, res, next) {
   try {
-    const notifications = await Notification.find().populate('user').sort({ message: 1 });
+    const notifications = await Notification.find().populate('user', '-hashPassword').sort({ message: 1 });
     res.json(notifications);
   } catch (error) {
     next(error);
   }
 }
 
-async function getNotificationById(req, res) {
+async function getNotificationById(req, res, next) {
   try {
     const id = req.params.id;
-    const notification = await Notification.findById(id).populate('user');
+    const notification = await Notification.findById(id).populate('user', '-hashPassword');
     if (!notification) {
       return res.status(404).json({ message: 'Notification not found' });
     }
@@ -23,10 +23,10 @@ async function getNotificationById(req, res) {
   }
 }
 
-async function getNotificationByUser(req, res) {
+async function getNotificationByUser(req, res, next) {
   try {
     const userId = req.params.userId;
-    const notifications = await Notification.find({ user: userId }).populate('user').sort({ message: 1 });
+    const notifications = await Notification.find({ user: userId }).populate('user', '-hashPassword').sort({ message: 1 });
     if (notifications.length === 0) {
       return res.status(404).json({ message: 'No notifications found for this user' });
     }
@@ -36,7 +36,7 @@ async function getNotificationByUser(req, res) {
   }
 }
 
-async function createNotification(req, res) {
+async function createNotification(req, res, next) {
   try {
     const { user, message } = req.body;
     if (!user || !message) {
@@ -48,14 +48,14 @@ async function createNotification(req, res) {
       isRead: false
     });
 
-    await newNotification.populate('user');
+    await newNotification.populate('user', '-hashPassword');
     res.status(201).json(newNotification);
   } catch (error) {
     next(error);
   }
 }
 
-async function updateNotification(req, res) {
+async function updateNotification(req, res, next) {
   try {
     const { id } = req.params;
     const { message, isRead } = req.body;
@@ -63,7 +63,7 @@ async function updateNotification(req, res) {
     const updatedNotification = await Notification.findByIdAndUpdate(id,
       { message, isRead },
       { new: true }
-    ).populate('user');
+    ).populate('user', '-hashPassword');
 
     if (updatedNotification) {
       return res.status(200).json(updatedNotification);
@@ -75,7 +75,7 @@ async function updateNotification(req, res) {
   }
 }
 
-async function deleteNotification(req, res) {
+async function deleteNotification(req, res, next) {
   try {
     const { id } = req.params;
     const deletedNotification = await Notification.findByIdAndDelete(id);
@@ -90,14 +90,14 @@ async function deleteNotification(req, res) {
   }
 }
 
-async function markAsRead(req, res) {
+async function markAsRead(req, res, next) {
   try {
     const { id } = req.params;
     const notification = await Notification.findByIdAndUpdate(
       id,
       { isRead: true },
       { new: true }
-    ).populate('user');
+    ).populate('user', '-hashPassword');
 
     if (notification) {
       return res.status(200).json(notification);
@@ -109,7 +109,7 @@ async function markAsRead(req, res) {
   }
 }
 
-async function markAllAsReadByUser(req, res) {
+async function markAllAsReadByUser(req, res, next) {
   try {
     const { userId } = req.params;
     const result = await Notification.updateMany(
@@ -126,13 +126,13 @@ async function markAllAsReadByUser(req, res) {
   }
 }
 
-async function getUnreadNotificationsByUser(req, res) {
+async function getUnreadNotificationsByUser(req, res, next) {
   try {
     const userId = req.params.userId;
     const notifications = await Notification.find({
       user: userId,
       isRead: false
-    }).populate('user').sort({ message: 1 });
+    }).populate('user', '-hashPassword').sort({ message: 1 });
 
     res.json({
       count: notifications.length,

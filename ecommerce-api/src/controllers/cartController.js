@@ -2,19 +2,19 @@ import Cart from '../models/cart.js';
 import errorHandler from '../middlewares/errorHandler.js';
 import Product from '../models/product.js'
 
-async function getCarts(req, res) {
+async function getCarts(req, res, next) {
   try {
-    const carts = await Cart.find().populate('user').populate('products.product');
+    const carts = await Cart.find().populate('user', '-hashPassword').populate('products.product');
     res.json(carts);
   } catch (error) {
     next(error);
   }
 }
 
-async function getCartById(req, res) {
+async function getCartById(req, res, next) {
   try {
     const id = req.params.id;
-    const cart = await Cart.findById(id).populate('user').populate('products.product');
+    const cart = await Cart.findById(id).populate('user', '-hashPassword').populate('products.product');
     if (!cart) {
       return res.status(404).json({ message: 'Cart not found' });
     }
@@ -24,10 +24,10 @@ async function getCartById(req, res) {
   }
 }
 
-async function getCartByUser(req, res) {
+async function getCartByUser(req, res, next) {
   try {
     const userId = req.params.id;
-    const cart = await Cart.findOne({ user: userId }).populate('user').populate('products.product');
+    const cart = await Cart.findOne({ user: userId }).populate('user', '-hashPassword').populate('products.product');
     if (!cart) {
       return res.status(404).json({ message: 'No cart found for this user' });
     }
@@ -37,7 +37,7 @@ async function getCartByUser(req, res) {
   }
 }
 
-async function createCart(req, res) {
+async function createCart(req, res, next) {
   try {
     const { user, products } = req.body;
     if (!user || !products || !Array.isArray(products)) {
@@ -56,7 +56,7 @@ async function createCart(req, res) {
       products
     });
 
-    await newCart.populate('user');
+    await newCart.populate('user', '-hashPassword');
     await newCart.populate('products.product');
 
     res.status(201).json(newCart);
@@ -65,7 +65,7 @@ async function createCart(req, res) {
   }
 }
 
-async function updateCart(req, res) {
+async function updateCart(req, res, next) {
   try {
     const { id } = req.params;
     const { user, products } = req.body;
@@ -83,7 +83,7 @@ async function updateCart(req, res) {
     const updatedCart = await Cart.findByIdAndUpdate(id,
       { user, products },
       { new: true }
-    ).populate('user').populate('products.product');
+    ).populate('user', '-hashPassword').populate('products.product');
 
     if (updatedCart) {
       return res.status(200).json(updatedCart);
@@ -95,7 +95,7 @@ async function updateCart(req, res) {
   }
 }
 
-async function deleteCart(req, res) {
+async function deleteCart(req, res, next) {
   try {
     const { id } = req.params;
     const deletedCart = await Cart.findByIdAndDelete(id);
@@ -110,7 +110,7 @@ async function deleteCart(req, res) {
   }
 }
 
-async function addProductToCart(req, res) {
+async function addProductToCart(req, res, next) {
   try {
     const { userId, productId, quantity = 1 } = req.body;
 
@@ -143,7 +143,7 @@ async function addProductToCart(req, res) {
     }
 
     await cart.save();
-    await cart.populate('user');
+    await cart.populate('user', '-hashPassword');
     await cart.populate('products.product');
 
     res.status(200).json(cart);

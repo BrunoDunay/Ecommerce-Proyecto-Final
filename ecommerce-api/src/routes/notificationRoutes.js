@@ -12,6 +12,8 @@ import {
 } from '../controllers/notificationController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import isAdmin from '../middlewares/isAdminMiddleware.js';
+import Notification from '../models/notification.js';
+import { selfOrAdmin, ownerOrAdmin } from '../middlewares/ownershipMiddleware.js';
 
 const router = express.Router();
 
@@ -19,27 +21,27 @@ const router = express.Router();
 router.get('/notifications', authMiddleware, isAdmin, getNotifications);
 
 // Obtener notificaciones no leídas por usuario
-router.get('/notifications/unread/:userId', authMiddleware, getUnreadNotificationsByUser);
+router.get('/notifications/unread/:userId', authMiddleware, selfOrAdmin('userId'), getUnreadNotificationsByUser);
 
 // Obtener notificaciones por usuario
-router.get('/notifications/user/:userId', authMiddleware, getNotificationByUser);
+router.get('/notifications/user/:userId', authMiddleware, selfOrAdmin('userId'), getNotificationByUser);
 
 // Obtener notificación por ID
-router.get('/notifications/:id', authMiddleware, getNotificationById);
+router.get('/notifications/:id', authMiddleware, ownerOrAdmin(Notification), getNotificationById);
 
 // Crear nueva notificación
-router.post('/notifications', authMiddleware, createNotification);
+router.post('/notifications', authMiddleware, isAdmin, createNotification);
 
 // Marcar una notificación como leída
-router.patch('/notifications/:id/mark-read', authMiddleware, markAsRead);
+router.patch('/notifications/:id/mark-read', authMiddleware, ownerOrAdmin(Notification), markAsRead);
 
 // Marcar todas las notificaciones de un usuario como leídas
-router.patch('/notifications/user/:userId/mark-all-read', authMiddleware, markAllAsReadByUser);
+router.patch('/notifications/user/:userId/mark-all-read', authMiddleware, selfOrAdmin('userId'), markAllAsReadByUser);
 
 // Actualizar notificación
 router.put('/notifications/:id', authMiddleware, isAdmin, updateNotification);
 
 // Eliminar notificación
-router.delete('/notifications/:id', authMiddleware, deleteNotification);
+router.delete('/notifications/:id', authMiddleware, ownerOrAdmin(Notification), deleteNotification);
 
 export default router;

@@ -258,10 +258,12 @@ const searchUsers = async (req, res, next) => {
     let filters = {};
 
     if (q) {
+      // Se escapa el texto para que no se interprete como expresión regular (evita ReDoS).
+      const safe = String(q).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       filters.$or = [
-        { displayName: { $regex: q, $options: "i" } },
-        { email: { $regex: q, $options: "i" } },
-        { phone: { $regex: q } },
+        { displayName: { $regex: safe, $options: "i" } },
+        { email: { $regex: safe, $options: "i" } },
+        { phone: { $regex: safe } },
       ];
     }
     //http://localhost:3000/api/users/search?q=Espe
@@ -275,7 +277,7 @@ const searchUsers = async (req, res, next) => {
     }
 
     let sortOptions = {};
-    if (sort) {
+    if (sort && ["displayName", "email", "role", "isActive", "_id"].includes(sort)) {
       const sortOrder = order === "desc" ? -1 : 1;
       sortOptions[sort] = sortOrder;
     } else {
@@ -285,6 +287,7 @@ const searchUsers = async (req, res, next) => {
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
     const users = await User.find(filters)
+      .select("-hashPassword")
       .sort(sortOptions)
       .skip(skip)
       .limit(parseInt(limit));

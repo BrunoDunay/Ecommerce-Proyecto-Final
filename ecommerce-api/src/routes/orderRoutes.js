@@ -12,6 +12,8 @@ import {
 } from '../controllers/orderController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import isAdmin from '../middlewares/isAdminMiddleware.js';
+import Order from '../models/order.js';
+import { selfOrAdmin, ownerOrAdmin, bindBodyUser } from '../middlewares/ownershipMiddleware.js';
 
 const router = express.Router();
 
@@ -19,13 +21,13 @@ const router = express.Router();
 router.get('/orders', authMiddleware, isAdmin, getOrders);
 
 // Obtener órdenes por usuario
-router.get('/orders/user/:userId', authMiddleware, getOrdersByUser);
+router.get('/orders/user/:userId', authMiddleware, selfOrAdmin('userId'), getOrdersByUser);
 
 // Obtener orden por ID
-router.get('/orders/:id', authMiddleware, getOrderById);
+router.get('/orders/:id', authMiddleware, ownerOrAdmin(Order), getOrderById);
 
 // Crear nueva orden
-router.post('/orders', authMiddleware, createOrder);
+router.post('/orders', authMiddleware, bindBodyUser('user'), createOrder);
 
 // Cancelar orden (función especial)
 router.patch('/orders/:id/cancel', authMiddleware, isAdmin, cancelOrder);

@@ -54,8 +54,9 @@ async function login(req, res, next) {
     const { email, password } = req.body;
     const userExist = await checkUserExist(email);
 
+    // Mismo mensaje si el correo no existe o la contraseña es incorrecta: no revela qué correos están registrados.
     if (!userExist) {
-      return res.status(400).json({ message: 'User does not exist. You must to sign in' });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     if (userExist.isActive === false) {

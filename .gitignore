@@ -1,3 +1,7 @@
 node_modules
 .env
 /dist
+# Logs locales (pueden traer rutas y datos de peticiones)
+logs/
+*.log
+coverage/
